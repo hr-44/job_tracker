@@ -43,41 +43,6 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe '#markdown' do
-    let(:renderer_obj) { Redcarpet::Render::HTML.new({}) }
-    let(:markdown_obj) { Redcarpet::Markdown.new(renderer_obj, {}) }
-
-    before(:each) do
-      allow(helper).to receive(:renderer_options).and_return({})
-      allow(helper).to receive(:md_extensions).and_return({})
-      allow(Redcarpet::Render::HTML).to receive(:new).and_return(renderer_obj)
-      allow(Redcarpet::Markdown).to receive(:new).and_return(markdown_obj)
-      allow(markdown_obj).to receive(:render).with('foo').and_return('foo')
-    end
-    after(:each) do
-      helper.markdown('foo')
-    end
-
-    it 'calls for default renderer_options' do
-      expect(helper).to receive(:renderer_options)
-    end
-    it 'calls for default md_extensions' do
-      expect(helper).to receive(:md_extensions)
-    end
-    it 'instantiates a Redcarpet::Render::HTML object' do
-      expect(Redcarpet::Render::HTML).to receive(:new)
-    end
-    it 'instantiates a Redcarpet::Markdown object' do
-      expect(Redcarpet::Markdown).to receive(:new)
-    end
-    it 'the markdown object receives #render with the input text' do
-      expect(markdown_obj).to receive(:render).with('foo')
-    end
-    it 'calls #html_safe' do
-      expect(helper).to receive(:html_safe)
-    end
-  end
-
   describe '#delete_link_opts' do
     it 'returned hash has these keys' do
       delete_link_opts = helper.delete_link_opts
