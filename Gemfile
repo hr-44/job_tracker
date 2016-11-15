@@ -1,24 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.5.1'
+gem 'rails', '5.0.0.1'
 gem 'pg', '~> 0.18.4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
 # semantic urls
 gem 'friendly_id', '~> 5.1.0'
-
-# front-end stuff
-gem 'jquery-rails', '~> 4.0.5'
-gem 'jquery-ui-rails', '~> 5.0.5'
-gem 'sass-rails', '~> 5.0.4'
-gem 'uglifier', '>= 2.7.2'
-gem 'coffee-rails', '~> 4.1.1'
-gem 'bootstrap-sass', '~> 3.3.6'
-gem 'redcarpet', '~> 3.3.4'
-gem 'bootstrap-multiselect-rails', '~> 0.9.9'
-gem 'font-awesome-rails', '~> 4.5.0.1'
-gem 'draper', '~> 2.1.0'
 
 # Authentication
 gem 'bcrypt',                 '~> 3.1.10'
@@ -49,7 +37,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails', '~> 3.4.2'
+  gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.6.0'
 end
 
