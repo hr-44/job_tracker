@@ -4,7 +4,6 @@ class NotesController < ApplicationController
   include OwnResources
 
   attr_reader :note
-  decorates_assigned :note
 
   helper_method :sort_column, :sort_direction
 

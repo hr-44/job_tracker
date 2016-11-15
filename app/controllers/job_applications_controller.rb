@@ -4,7 +4,6 @@ class JobApplicationsController < ApplicationController
   include OwnResources
 
   attr_reader :job_application
-  decorates_assigned :job_application
 
   helper_method :sort_column, :sort_direction
 

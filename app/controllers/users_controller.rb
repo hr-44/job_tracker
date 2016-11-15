@@ -3,8 +3,6 @@ class UsersController < ApplicationController
   before_action :set_user,       only: [:show, :edit, :update, :destroy]
   before_action :check_user,     only: [:show, :edit, :update, :destroy]
 
-  decorates_assigned :user
-
   # GET /users/1
   def show
   end
