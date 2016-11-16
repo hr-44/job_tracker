@@ -39,6 +39,7 @@ end
 group :test do
   gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.6.0'
+  gem 'rails-controller-testing', '~> 1.0.1'
 end
 
 group :production do
