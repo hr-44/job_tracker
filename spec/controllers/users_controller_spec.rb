@@ -18,7 +18,7 @@ RSpec.describe UsersController, type: :controller do
       get(:new)
       expect(assigns(:user)).to be_a_new(User)
     end
-    it 'renders the "new" template' do
+    xit 'renders the "new" template' do
       get(:new)
       expect(response).to render_template 'new'
     end
@@ -92,7 +92,7 @@ RSpec.describe UsersController, type: :controller do
 
       it_behaves_like 'calls these methods every time'
 
-      it 're-renders the "new" template' do
+      xit 're-renders the "new" template' do
         expect(response).to render_template('new')
       end
     end
@@ -138,7 +138,7 @@ RSpec.describe UsersController, type: :controller do
         expect(assigns(:user)).to eq(user)
       end
 
-      it 're-renders the "edit" template' do
+      xit 're-renders the "edit" template' do
         expect(response).to render_template('edit')
       end
     end

@@ -28,7 +28,9 @@ module StubLogin
   private
 
   def request_test?
-    defined?(post_via_redirect)
+    # defined?(post_via_redirect)
+    # Not doing request specs anywhere, so just return false...
+    false
   end
 
   def log_in_for_request_spec(mocked_user, options)
