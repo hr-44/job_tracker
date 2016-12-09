@@ -32,10 +32,6 @@ group :development, :test do
   gem 'codeclimate-test-reporter', '~> 0.4.8', require: false
 end
 
-group :development do
-  gem 'web-console', '~> 2.3.0'
-end
-
 group :test do
   gem 'rspec-rails', '~> 3.5.2'
   gem 'factory_girl_rails', '~> 4.6.0'
