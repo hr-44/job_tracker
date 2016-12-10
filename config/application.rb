@@ -3,10 +3,10 @@ require_relative 'boot'
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
-require "active_job/railtie"
+# require "active_job/railtie"
 require "active_record/railtie"
 require "action_controller/railtie"
-require "action_mailer/railtie"
+# require "action_mailer/railtie"
 require "action_view/railtie"
 # require "action_cable/engine"
 # require "sprockets/railtie"
@@ -27,9 +27,13 @@ module JobTracker
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    # Browser-related
+    config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Flash
+
+    # Sessions-related
     config.middleware.use ActionDispatch::Session::CookieStore
-    config.middleware.use ActionDispatch::Session::CacheStore
+    # config.middleware.use ActionDispatch::Session::CacheStore
+    # config.middleware.use ActionDispatch::Session::MemCacheStore
   end
 end
