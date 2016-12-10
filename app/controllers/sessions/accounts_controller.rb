@@ -4,22 +4,25 @@ module Sessions
 
     def new
       return redirect_to(user_path) if logged_in?
-      # otherwise, display login page
+
+      message = { text: 'Client not logged in. Go to login page.' }
+      render(json: message, status: 302)
     end
 
     def create
       if authenticated?
         login_authenticated_user
       else
-        # TODO: send this message as part of json response
-        # flash.now[:danger] = 'Invalid email/password combination'
-        render 'new'
+        message = { text: 'Invalid email/password combination.' }
+        render(json: message, status: 401)
       end
     end
 
     private
 
     def set_user
+      # TODO: send client a 400 if incoming params has no "session" key.
+      # See: http://guides.rubyonrails.org/action_controller_overview.html#rescue
       @user = find_user_by_email if email_and_password?
     end
 
