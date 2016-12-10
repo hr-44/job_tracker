@@ -1,17 +1,19 @@
 class ApplicationController < ActionController::API
+  # support for `helper_method`
   include AbstractController::Helpers
-  include ActionController::RequestForgeryProtection
+  # support for `respond_to`
   include ActionController::MimeResponds
+  # support for signed, encrypted cookies, requires `ActionDispatch::Cookies` middleware
   include ActionController::Cookies
 
-  # TODO: remove all flash-related code from controllers
-  include ActionController::Flash
-
+  # TODO: re-enable this protection later on...
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  protect_from_forgery with: :null_session
+  # include ActionController::RequestForgeryProtection
+  # protect_from_forgery with: :null_session
 
-  include SessionsHelper
+  # TODO: re-enable sessions later...
+  # include SessionsHelper
 
   helper_method :current_user, :logged_in?
 end
