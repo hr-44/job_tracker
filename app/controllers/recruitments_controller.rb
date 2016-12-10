@@ -14,7 +14,8 @@ class RecruitmentsController < ApplicationController
     @recruitment = Recruitment.new(opts)
 
     if recruitment.save
-      flash[:success] = 'Client, Agency relationship successfully added'
+      # TODO: send this message as part of json response
+      # flash[:success] = 'Client, Agency relationship successfully added'
       redirect_to company
     else
       render :new
@@ -23,7 +24,8 @@ class RecruitmentsController < ApplicationController
 
   def destroy
     recruitment.destroy
-    flash[:info] = 'Relationship removed'
+    # TODO: send this message as part of json response
+    # flash[:info] = 'Relationship removed'
     redirect_to company
   end
 

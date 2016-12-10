@@ -11,7 +11,8 @@ module Sessions
       if authenticated?
         login_authenticated_user
       else
-        flash.now[:danger] = 'Invalid email/password combination'
+        # TODO: send this message as part of json response
+        # flash.now[:danger] = 'Invalid email/password combination'
         render 'new'
       end
     end
@@ -46,7 +47,8 @@ module Sessions
 
     def login_authenticated_user
       log_in(user)
-      flash[:success] = 'You are now logged in'
+      # TODO: send this message as part of json response
+      # flash[:success] = 'You are now logged in'
 
       if remember_me?
         remember(user)

@@ -22,7 +22,8 @@ class UsersController < ApplicationController
 
     if @user.save
       log_in @user
-      flash[:success] = 'Thanks for signing up.'
+      # TODO: send this message as part of json response
+      # flash[:success] = 'Thanks for signing up.'
       redirect_to root_url
     else
       render :new
@@ -32,7 +33,8 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      flash[:success] = 'Profile was successfully updated.'
+      # TODO: send this message as part of json response
+      # flash[:success] = 'Profile was successfully updated.'
       redirect_to user_path
     else
       render :edit

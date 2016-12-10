@@ -65,7 +65,8 @@ module SessionsHelper
     return if logged_in?
 
     store_location
-    flash[:danger] = 'Please log in'
+    # TODO: send this message as part of json response
+    # flash[:danger] = 'Please log in'
     redirect_to(login_url)
     false # halt the before filter
   end

@@ -11,12 +11,14 @@ module Sessions
         redirect_to(action: 'failure')
         return
       end
-      flash[:success] = 'Signed in'
+      # TODO: send this message as part of json response
+      # flash[:success] = 'Signed in'
       redirect_to(root_url)
     end
 
     def failure
-      flash[:danger] = 'There was an error authenticating you.'
+      # TODO: send this message as part of json response
+      # flash[:danger] = 'There was an error authenticating you.'
       redirect_to(root_url)
     end
 
