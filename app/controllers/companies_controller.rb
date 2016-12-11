@@ -56,7 +56,6 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    # TODO: fix this route, got to figure out why `:id` param is coming in wrong
     respond_to do |format|
       if company.update(company_params)
         successful_update(format, company)
