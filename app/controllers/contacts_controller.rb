@@ -55,18 +55,31 @@ class ContactsController < ApplicationController
   # POST /contacts.json
   def create
     @contact = Contact.new(contact_params_with_associated_ids)
-    save_and_respond(contact)
+
+    if contact.save
+      # TODO: DRY up, invoke the 'show' action
+      json = {
+        contact: contact,
+        notes: contact.notes
+      }
+      render(json: json, status: :created)
+    else
+      render(json: contact.errors, status: :unprocessable_entity)
+    end
   end
 
   # PATCH/PUT /contacts/1
   # PATCH/PUT /contacts/1.json
   def update
-    respond_to do |format|
-      if contact.update(contact_params_with_associated_ids)
-        successful_update(format, contact)
-      else
-        failed_update(format, contact)
-      end
+    if contact.update(contact_params_with_associated_ids)
+      # TODO: DRY up, invoke the 'show' action
+      json = {
+        contact: contact,
+        notes: contact.notes
+      }
+      render(json: json)
+    else
+      render(json: contact.errors, status: :unprocessable_entity)
     end
   end
 
@@ -97,9 +110,14 @@ class ContactsController < ApplicationController
   end
 
   def contact_params_with_associated_ids
-    company_id = set_company_id
-    user_id    = current_user.id
-    contact_params.merge(company_id: company_id, user_id: user_id)
+    user_id = current_user.id
+
+    if params[:contact][:company_name].present?
+      company_id = set_company_id
+      contact_params.merge(company_id: company_id, user_id: user_id)
+    else
+      contact_params.merge(user_id: user_id)
+    end
   end
 
   def set_company_id
