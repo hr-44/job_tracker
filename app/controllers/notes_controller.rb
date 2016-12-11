@@ -28,11 +28,7 @@ class NotesController < ApplicationController
   end
 
   def show
-    json = {
-      note: note,
-      notable: @notable
-    }
-    render(json: json)
+    render(formats: :json)
   end
 
   # GET /notes/new
@@ -49,13 +45,12 @@ class NotesController < ApplicationController
   def create
     @note = build_note
 
-    respond_to do |format|
-      if note.save
-        message = "Note created for #{@notable.class}"
-        successful_creation(format, @notable, message)
-      else
-        failed_creation(format, note)
-      end
+    if note.save
+      # message = "Note created for #{@notable.class}"
+      # successful_creation(format, @notable, message)
+      render(action: :show, status: :created, formats: :json)
+    else
+      failed_creation(format, note)
     end
   end
 
