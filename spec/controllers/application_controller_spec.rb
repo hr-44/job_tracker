@@ -232,10 +232,6 @@ RSpec.describe ApplicationController, type: :controller do
         expect(@controller).to receive(:store_location)
         @controller.send(:logged_in_user)
       end
-      it 'there is a flash message' do
-        @controller.send(:logged_in_user)
-        expect(flash[:danger]).not_to be_nil
-      end
       it 'calls #redirect_to' do
         expect(@controller).to receive(:redirect_to)
         @controller.send(:logged_in_user)

@@ -19,9 +19,6 @@ describe Sessions::OmniAuthUsersController, type: :controller do
       it 'redirects to root' do
         expect(response).to redirect_to root_url
       end
-      it 'has a flash message' do
-        expect(flash[:success]).not_to be_nil
-      end
     end
 
     context 'failed authentication' do
@@ -44,10 +41,6 @@ describe Sessions::OmniAuthUsersController, type: :controller do
     it 'redirects to root' do
       get(:failure)
       expect(response).to redirect_to(root_url)
-    end
-    it 'has a flash message on danger key' do
-      get(:failure)
-      expect(flash[:danger]).not_to be_nil
     end
   end
 

@@ -78,9 +78,6 @@ describe RecruitmentsController, type: :controller do
         it 'redirects to agency' do
           expect(response).to redirect_to(agency)
         end
-        it 'has a flash message' do
-          expect(flash[:success]).not_to be_nil
-        end
       end
 
       context 'expected method calls' do
@@ -153,9 +150,6 @@ describe RecruitmentsController, type: :controller do
         it 'redirects to client' do
           expect(response).to redirect_to(client)
         end
-        it 'has a flash message' do
-          expect(flash[:success]).not_to be_nil
-        end
       end
 
       context 'expected method calls' do
@@ -199,10 +193,6 @@ describe RecruitmentsController, type: :controller do
     it 'calls #destroy on the recruitment object' do
       expect(recruitment).to receive(:destroy)
       delete(:destroy, destroy_params)
-    end
-    it 'sets a flash message' do
-      delete(:destroy, destroy_params)
-      expect(flash[:info]).not_to be_nil
     end
     it 'redirects to company' do
       delete(:destroy, destroy_params)

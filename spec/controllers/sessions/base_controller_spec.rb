@@ -12,10 +12,6 @@ describe Sessions::BaseController, type: :controller do
         delete(:destroy)
       end
     end
-    it 'sets flash message' do
-      delete(:destroy)
-      expect(flash[:info]).not_to be_nil
-    end
     it 'redirects to root_url' do
       delete(:destroy)
       expect(response).to redirect_to root_url

@@ -46,10 +46,6 @@ describe Sessions::AccountsController, type: :controller do
         allow(@controller).to receive(:authenticated?).and_return(false)
       end
 
-      it 'sets a flash message' do
-        post(:create)
-        expect(flash.now[:danger]).not_to be_nil
-      end
       xit 'renders "new"' do
         post(:create)
         expect(response).to render_template 'new'
@@ -211,10 +207,6 @@ describe Sessions::AccountsController, type: :controller do
       it 'calls log_in with user' do
         expect(@controller).to receive(:log_in).with(user)
         @controller.send(:login_authenticated_user)
-      end
-      it 'sets flash message' do
-        @controller.send(:login_authenticated_user)
-        expect(flash[:success]).not_to be_nil
       end
       it 'calls #redirect_back_or with user' do
         expect(@controller).to receive(:redirect_back_or).with(root_url)
