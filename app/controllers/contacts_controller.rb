@@ -17,14 +17,27 @@ class ContactsController < ApplicationController
     @contacts = collection_belonging_to_user
     @contacts = @contacts.sorted
     @contacts = custom_index_sort if params[:sort]
+    json = {
+      contacts: @contacts,
+      params: {
+        sort: params[:sort],
+        direction: params[:direction]
+      }
+    }
+    render(json: json)
   end
 
   # GET /contacts/1
   # GET /contacts/1.json
   def show
-    @notable = contact
+    @notable = contact # TODO: remove variable? not sure it's needed w/ JSON only
     @notes = @notable.notes
     @note = Note.new
+    json = {
+      contact: contact,
+      notes: @notes
+    }
+    render(json: json)
   end
 
   # GET /contacts/new
@@ -61,9 +74,10 @@ class ContactsController < ApplicationController
   # DELETE /contacts/1.json
   def destroy
     @contact.destroy
-    respond_to do |format|
-      destruction(format, contacts_url)
-    end
+    json = {
+      message: "Contact, #{contact.name}, deleted"
+    }
+    render(json: json)
   end
 
   private
