@@ -18,11 +18,23 @@ module JobApplications
       @cover_letters = collection_belonging_to_user
       @cover_letters = @cover_letters.sorted
       @cover_letters = custom_index_sort if params[:sort]
+      json = {
+        cover_letters: @cover_letters,
+        params: {
+          sort: params[:sort],
+          direction: params[:direction]
+        }
+      }
+      render(json: json)
     end
 
     # GET /cover_letters/1
     # GET /cover_letters/1.json
     def show
+      json = {
+        cover_letter: cover_letter
+      }
+      render(json: json)
     end
 
     # GET /cover_letters/new
@@ -46,24 +58,32 @@ module JobApplications
     def create
       @cover_letter = CoverLetter.new(cover_letter_params_with_associated_ids)
 
-      respond_to do |format|
-        if cover_letter.save
-          successful_creation(format, cover_letter.job_application)
-        else
-          failed_creation(format, cover_letter)
-        end
+      if cover_letter.save
+        json = {
+          cover_letter: cover_letter
+        }
+        render(json: json)
+      else
+        json = {
+          text: cover_letter.errors
+        }
+        render(json: json, status: 409)
       end
     end
 
     # PATCH/PUT /cover_letters/1
     # PATCH/PUT /cover_letters/1.json
     def update
-      respond_to do |format|
-        if cover_letter.update(cover_letter_params)
-          successful_update(format, cover_letter.job_application)
-        else
-          failed_update(format, cover_letter)
-        end
+      if cover_letter.update(cover_letter_params)
+        json = {
+          cover_letter: cover_letter
+        }
+        render(json: json)
+      else
+        json = {
+          text: cover_letter.errors
+        }
+        render(json: json, status: 409)
       end
     end
 
@@ -71,9 +91,10 @@ module JobApplications
     # DELETE /cover_letters/1.json
     def destroy
       @cover_letter.destroy
-      respond_to do |format|
-        destruction(format, cover_letter.job_application)
-      end
+      json = {
+        message: "Cover letter for, #{@cover_letter.job_application_title}, deleted"
+      }
+      render(json: json)
     end
 
     private
