@@ -1,11 +1,16 @@
 class CategoriesController < ApplicationController
-  attr_reader :category
+  attr_reader :category, :companies
 
   before_action :logged_in_user
   before_action :set_category
 
   def show
     @companies = category.companies
+    json = {
+      category: category,
+      companies: companies
+    }
+    render(json: json)
   end
 
   private
