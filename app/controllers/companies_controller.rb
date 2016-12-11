@@ -13,6 +13,16 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     @companies = search_filter_sort
+    json = {
+      companies: @companies,
+      params: {
+        search: params[:search],
+        category_names: params[:category_names],
+        sort: params[:sort],
+        direction: params[:direction]
+      }
+    }
+    render(json: json)
   end
 
   # GET /companies/1
@@ -20,6 +30,14 @@ class CompaniesController < ApplicationController
   def show
     @contacts = contacts_belonging_to_user_and_current_company
     @job_applications = job_applications_belonging_to_user_and_current_company
+
+    json = {
+      company: company,
+      contacts: @contacts,
+      job_applications: @job_applications
+    }
+
+    render(json: json)
   end
 
   # GET /companies/new
@@ -38,6 +56,7 @@ class CompaniesController < ApplicationController
   end
 
   def update
+    # TODO: fix this route, got to figure out why `:id` param is coming in wrong
     respond_to do |format|
       if company.update(company_params)
         successful_update(format, company)
