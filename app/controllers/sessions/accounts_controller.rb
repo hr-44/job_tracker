@@ -1,5 +1,7 @@
 module Sessions
   class AccountsController < BaseController
+    rescue_from ActionController::ParameterMissing, with: :handle_missing_params
+
     before_action :set_user, only: :create
 
     def new
@@ -12,6 +14,10 @@ module Sessions
     def create
       if authenticated?
         login_authenticated_user
+
+        session[:forwarding_url] ?
+          redirect_back_or(root_url) :
+          render(json: { text: 'You have logged in' })
       else
         message = { text: 'Invalid email/password combination.' }
         render(json: message, status: 401)
@@ -21,9 +27,17 @@ module Sessions
     private
 
     def set_user
-      # TODO: send client a 400 if incoming params has no "session" key.
-      # See: http://guides.rubyonrails.org/action_controller_overview.html#rescue
+      unless params[:session].present?
+        msg = "Remember to wrap up params in 'session' key"
+        raise ActionController::ParameterMissing.new(msg)
+      end
+
       @user = find_user_by_email if email_and_password?
+    end
+
+    def handle_missing_params(e)
+      json = { text: e }
+      render(json: json, status: :bad_request)
     end
 
     def email_and_password?
@@ -50,16 +64,12 @@ module Sessions
 
     def login_authenticated_user
       log_in(user)
-      # TODO: send this message as part of json response
-      # flash[:success] = 'You are now logged in'
 
       if remember_me?
         remember(user)
       else
         forget(user)
       end
-
-      redirect_back_or(root_url)
     end
 
     def remember_me?
