@@ -12,8 +12,7 @@ class ApplicationController < ActionController::API
   # include ActionController::RequestForgeryProtection
   # protect_from_forgery with: :null_session
 
-  # TODO: re-enable sessions later...
-  # include SessionsHelper
+  include SessionsHelper
 
   helper_method :current_user, :logged_in?
 end
