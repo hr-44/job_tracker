@@ -17,11 +17,22 @@ class NotesController < ApplicationController
   def index
     @notes = collection_belonging_to_user
     @notes = custom_index_sort if params[:sort]
+    json = {
+      notes: @notes,
+      params: {
+        sort: params[:sort],
+        direction: params[:direction]
+      }
+    }
+    render(json: json)
   end
 
-  # GET /notes/1
-  # GET /notes/1.json
   def show
+    json = {
+      note: note,
+      notable: @notable
+    }
+    render(json: json)
   end
 
   # GET /notes/new
@@ -65,9 +76,15 @@ class NotesController < ApplicationController
   # DELETE /notes/1.json
   def destroy
     @note.destroy
-    respond_to do |format|
-      destruction(format, @notable)
-    end
+    notable = @notable
+
+    name_of_notable = notable.class == Contact ? notable.name : notable.title
+
+    json = {
+      message: "Note for, #{name_of_notable}, deleted"
+    }
+
+    render(json: json)
   end
 
   private
