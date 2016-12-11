@@ -4,9 +4,7 @@ module Sessions
 
     def destroy
       log_out if logged_in?
-      # TODO: send this message as part of json response
-      # flash[:info] = 'You have logged out'
-      redirect_to(root_url)
+      render(json: { message: 'You have logged out' })
     end
   end
 end
