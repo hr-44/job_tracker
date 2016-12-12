@@ -20,7 +20,7 @@ RSpec.describe CompaniesController, type: :controller do
     it 'assigns all companies as @companies' do
       expect(assigns(:companies)).to eq([:foo, :bar])
     end
-    xit 'renders index' do
+    it 'renders index' do
       expect(response).to render_template(:index)
     end
   end
@@ -44,7 +44,7 @@ RSpec.describe CompaniesController, type: :controller do
     it 'assigns the requested company as @company' do
       expect(assigns(:company)).to eq(company)
     end
-    xit 'renders show' do
+    it 'renders show' do
       expect(response).to render_template(:show)
     end
 

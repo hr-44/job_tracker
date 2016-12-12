@@ -21,7 +21,7 @@ RSpec.describe NotesController, type: :controller do
     it 'assigns all notes as @notes' do
       expect(assigns(:notes)).to eq([note])
     end
-    xit 'renders index' do
+    it 'renders index' do
       expect(response).to render_template(:index)
     end
   end
@@ -34,7 +34,7 @@ RSpec.describe NotesController, type: :controller do
       it 'assigns the requested note as @note' do
         expect(assigns(:note)).to eq(note)
       end
-      xit 'renders show' do
+      it 'renders show' do
         expect(response).to render_template(:show)
       end
     end

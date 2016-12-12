@@ -40,8 +40,8 @@ describe RecruitmentsController, type: :controller do
           post(:create, params: { company_id: 1, recruitment: { client_name: 'foo' } })
         end
 
-        xit 'renders the new template' do
-          expect(response).to render_template :new
+        it 'responds with unprocessable_entity' do
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 
@@ -78,8 +78,9 @@ describe RecruitmentsController, type: :controller do
         it 'calls #recruitment_params_with_associated_ids' do
           expect(controller).to receive(:recruitment_params_with_associated_ids)
         end
-        # TODO: figure out how params are different in Rails 5, vs Rails 4
-        xit 'calls for a new Recruitment object with these params' do
+        it 'calls for a new Recruitment object with these params' do
+          allow(controller).to receive(:build_recruitment_params)
+            .and_return(expected_recruitment_params)
           expect(Recruitment).to receive(:new).with(expected_recruitment_params)
         end
       end
@@ -112,8 +113,8 @@ describe RecruitmentsController, type: :controller do
           post(:create, params: { company_id: 1, recruitment: { agency_name: 'foo' } })
         end
 
-        xit 'renders the new template' do
-          expect(response).to render_template :new
+        it 'responds with unprocessable_entity' do
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 
@@ -150,8 +151,9 @@ describe RecruitmentsController, type: :controller do
         it 'calls #recruitment_params_with_associated_ids' do
           expect(controller).to receive(:recruitment_params_with_associated_ids)
         end
-        # TODO: figure out how params are different in Rails 5, vs Rails 4
-        xit 'calls for a new Recruitment object with these params' do
+        it 'calls for a new Recruitment object with these params' do
+          allow(controller).to receive(:build_recruitment_params)
+            .and_return(expected_recruitment_params)
           expect(Recruitment).to receive(:new).with(expected_recruitment_params)
         end
       end

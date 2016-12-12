@@ -34,11 +34,8 @@ RSpec.describe ContactsController, type: :controller do
       it 'sends JSON' do
         expect(response.content_type).to eq('application/json')
       end
-      it 'has this shape' do
-        obj = JSON.parse(response.body)
-        expect(obj).to be_a(Hash)
-        expect(obj['contacts']).to be_an(Array)
-        expect(obj['params']).to be_a(Hash)
+      it 'renders index' do
+        expect(response).to render_template('index')
       end
     end
 
@@ -68,11 +65,8 @@ RSpec.describe ContactsController, type: :controller do
     it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
-    it 'has this shape' do
-      obj = JSON.parse(response.body)
-      expect(obj).to be_a(Hash)
-      expect(obj['contact']).to be_a(Hash)
-      expect(obj['notes']).to be_an(Array)
+    it 'renders show' do
+      expect(response).to render_template('show')
     end
 
     context '@notable, @notes, @note' do
@@ -191,12 +185,9 @@ RSpec.describe ContactsController, type: :controller do
         put(:update, params: attr_for_update)
         expect(assigns(:contact)).to eq(contact)
       end
-      it 'has this shape' do
+      it 'renders show' do
         put(:update, params: attr_for_update)
-        obj = JSON.parse(response.body)
-        expect(obj).to be_a(Hash)
-        expect(obj['contact']).to be_a(Hash)
-        expect(obj['notes']).to be_an(Array)
+        expect(response).to render_template('show')
       end
     end
 

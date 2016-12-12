@@ -6,10 +6,19 @@ RSpec.describe UsersController, type: :controller do
   before(:each) { log_in_as(user) }
 
   describe 'GET #show' do
-    it 'assigns the requested user as @user' do
+    before(:each) do
       allow(User).to receive(:find).and_return(user)
-      get(:show, params: { id: user.id })
+      get(:show)
+    end
+
+    it 'assigns user as @user' do
       expect(assigns(:user)).to eq(user)
+    end
+    it 'provides limited user information' do
+      expect(assigns(:filtered_user_info)).not_to be_nil
+    end
+    it 'renders show' do
+      expect(response).to render_template('show')
     end
   end
 
@@ -68,8 +77,8 @@ RSpec.describe UsersController, type: :controller do
 
       it_behaves_like 'calls these methods every time'
 
-      xit 're-renders the "new" template' do
-        expect(response).to render_template('new')
+      it 'responds with unprocessable_entity' do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -114,8 +123,8 @@ RSpec.describe UsersController, type: :controller do
         expect(assigns(:user)).to eq(user)
       end
 
-      xit 're-renders the "edit" template' do
-        expect(response).to render_template('edit')
+      it 'responds with unprocessable_entity' do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end

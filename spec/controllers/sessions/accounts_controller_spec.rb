@@ -5,16 +5,29 @@ describe Sessions::AccountsController, type: :controller do
   let(:account)  { build(:account) }
 
   describe 'GET #new' do
-    it 'redirects to current_user if logged in' do
-      allow(@controller).to receive(:current_user).and_return(user)
-      allow(@controller).to receive(:logged_in?).and_return(true)
-      get(:new)
-      expect(response).to redirect_to(user_path)
+    context 'when user is logged in' do
+      it 'redirects to current_user' do
+        allow(@controller).to receive(:current_user).and_return(user)
+        allow(@controller).to receive(:logged_in?).and_return(true)
+        get(:new)
+        expect(response).to redirect_to(user_path)
+      end
     end
-    it 'tells client to redirect' do
-      allow(@controller).to receive(:logged_in?).and_return(false)
-      get(:new)
-      expect(response).to have_http_status(:redirect)
+    context 'when user is not logged in' do
+      before(:each) do
+        allow(@controller).to receive(:logged_in?).and_return(false)
+        get(:new)
+      end
+
+      it 'tells client to redirect' do
+        expect(response).to have_http_status(:redirect)
+      end
+      it 'sets a value for @message' do
+        expect(assigns(:message)).not_to be_nil
+      end
+      it 'renders "login" template' do
+        expect(response).to render_template('login')
+      end
     end
   end
 
@@ -25,17 +38,38 @@ describe Sessions::AccountsController, type: :controller do
         allow(@controller).to receive(:user).and_return(user)
         allow(@controller).to receive(:authenticated?).and_return(true)
         allow(@controller).to receive(:login_authenticated_user)
-        allow(@controller).to receive(:render)
-      end
-      after(:each) do
-        post(:create)
       end
 
       it 'calls #authenticated?' do
         expect(@controller).to receive(:authenticated?)
+        post(:create)
       end
       it 'calls #login_authenticted_user' do
         expect(@controller).to receive(:login_authenticated_user)
+        post(:create)
+      end
+
+      context 'when there is a forwarding_url in the session' do
+        it 'redirects to the forwarding_url' do
+          forwarding_url = '/foo/bar'
+          session[:forwarding_url] = forwarding_url
+          post(:create)
+          expect(response).to redirect_to(forwarding_url)
+        end
+      end
+
+      context 'when there is not a forwarding_url in the session' do
+        before(:each) do
+          session.delete(:forwarding_url)
+          post(:create)
+        end
+
+        it 'renders "login" template' do
+          expect(response).to render_template('login')
+        end
+        it 'sets a value for @message' do
+          expect(assigns(:message)).not_to be_nil
+        end
       end
     end
 
@@ -53,6 +87,14 @@ describe Sessions::AccountsController, type: :controller do
       it 'does not call #login_authenticated_user' do
         expect(@controller).not_to receive(:login_authenticated_user)
         post(:create)
+      end
+      it 'sets a value for @message' do
+        post(:create)
+        expect(assigns(:message)).not_to be_nil
+      end
+      it 'renders "login" template' do
+        post(:create)
+        expect(response).to render_template('login')
       end
     end
   end

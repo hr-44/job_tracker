@@ -23,5 +23,8 @@ RSpec.describe SearchSuggestionsController, type: :controller do
     it 'renders json' do
       expect(response.header['Content-Type']).to include 'application/json'
     end
+    it 'renders "index"' do
+      expect(response).to render_template('index')
+    end
   end
 end

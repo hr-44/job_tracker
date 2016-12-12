@@ -36,7 +36,7 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'assigns all job_applications as @job_application' do
         expect(assigns(:job_applications)).not_to be_nil
       end
-      xit 'renders index' do
+      it 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -70,7 +70,7 @@ RSpec.describe JobApplicationsController, type: :controller do
     it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
-    xit 'renders show' do
+    it 'renders show' do
       expect(response).to render_template(:show)
     end
 

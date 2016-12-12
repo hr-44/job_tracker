@@ -33,7 +33,7 @@ describe JobApplications::PostingsController, type: :controller do
       it 'assigns all postings as @postings' do
         expect(assigns(:postings)).not_to be_nil
       end
-      xit 'renders index' do
+      it 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -67,7 +67,7 @@ describe JobApplications::PostingsController, type: :controller do
     it 'assigns the requested posting as @posting' do
       expect(assigns(:posting)).to eq(posting)
     end
-    xit 'renders show' do
+    it 'renders show' do
       expect(response).to render_template(:show)
     end
   end
@@ -117,8 +117,8 @@ describe JobApplications::PostingsController, type: :controller do
       it 'sets @posting to a new JobApplications::Posting object' do
         expect(assigns(:posting)).to be_a_new(JobApplications::Posting)
       end
-      it 'renders JSON' do
-        expect(response.content_type).to eq('application/json')
+      it 'renders show' do
+        expect(response).to render_template('show')
       end
       it 'returns a 201' do
         expect(response).to have_http_status(:created)
@@ -135,8 +135,8 @@ describe JobApplications::PostingsController, type: :controller do
       it 'assigns a newly created but unsaved posting as @posting' do
         expect(assigns(:posting)).to be_a_new(JobApplications::Posting)
       end
-      it 'returns a 409 status code' do
-        expect(response).to have_http_status(409)
+      it 'returns a 422 status code' do
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -167,9 +167,9 @@ describe JobApplications::PostingsController, type: :controller do
         expect(posting).to receive(:update)
         put(:update, params: attr_for_update)
       end
-      it 'returns a 200' do
+      it 'renders show' do
         put(:update, params: attr_for_update)
-        expect(response).to have_http_status(:success)
+        expect(response).to render_template('show')
       end
     end
 

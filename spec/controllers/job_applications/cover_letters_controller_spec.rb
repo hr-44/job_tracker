@@ -34,7 +34,7 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'assigns all cover_letters as @cover_letters' do
         expect(assigns(:cover_letters)).not_to be_nil
       end
-      xit 'renders index' do
+      it 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -68,7 +68,7 @@ describe JobApplications::CoverLettersController, type: :controller do
     it 'assigns the requested cover_letter as @cover_letter' do
       expect(assigns(:cover_letter)).to eq(cover_letter)
     end
-    xit 'renders show' do
+    it 'renders show' do
       expect(response).to render_template(:show)
     end
   end
@@ -119,8 +119,8 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'sets @cover_letter to a new JobApplications::CoverLetter object' do
         expect(assigns(:cover_letter)).to be_a_new(JobApplications::CoverLetter)
       end
-      it 'renders JSON' do
-        expect(response.content_type).to eq('application/json')
+      it 'renders show' do
+        expect(response).to render_template('show')
       end
       it 'returns a 201' do
         expect(response).to have_http_status(:created)
@@ -137,8 +137,8 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'assigns a newly created but unsaved cover_letter as @cover_letter' do
         expect(assigns(:cover_letter)).to be_a_new(JobApplications::CoverLetter)
       end
-      it 'returns a 409 status code' do
-        expect(response).to have_http_status(409)
+      it 'returns a 422 status code' do
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -170,9 +170,9 @@ describe JobApplications::CoverLettersController, type: :controller do
         expect(cover_letter).to receive(:update)
         put(:update, params: attr_for_update)
       end
-      it 'returns a 200' do
+      it 'renders show' do
         put(:update, params: attr_for_update)
-        expect(response).to have_http_status(:success)
+        expect(response).to render_template('show')
       end
     end
 
@@ -203,7 +203,6 @@ describe JobApplications::CoverLettersController, type: :controller do
       expect(cover_letter).to receive(:destroy)
       delete(:destroy, params: { job_application_id: 1 })
     end
-
     it 'responds with JSON' do
       delete(:destroy, params: { job_application_id: 1 })
       expect(response.content_type).to eq('application/json')
