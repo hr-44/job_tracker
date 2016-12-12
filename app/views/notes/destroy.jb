@@ -1,0 +1,18 @@
+json = {}
+
+notable = @notable
+# 'note' is a polymorphic resource. Generate different message based on this relationship
+case notable.class.to_s
+when 'Contact'
+  name_of_notable = notable.name
+when 'JobApplication'
+  name_of_notable = notable.title
+else
+  json[:bug] = "There is a bug.... @notable.class is: #{notable.class}"
+end
+
+json = {
+  message: "Note for, #{name_of_notable}, deleted"
+}
+
+return json

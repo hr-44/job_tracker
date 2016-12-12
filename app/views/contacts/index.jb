@@ -1,0 +1,7 @@
+{
+  contacts: @contacts,
+  params: {
+    sort: params[:sort],
+    direction: params[:direction]
+  }
+}

@@ -1,0 +1,15 @@
+json = {
+  note: @note,
+}
+
+# 'note' is a polymorphic resource. Generate different keys based on this relationship
+case @notable.class.to_s
+when 'Contact'
+  json[:contact] = @notable
+when 'JobApplication'
+  json[:job_application] = @notable
+else
+  json[:bug] = "There is a bug.... @notable.class is: #{@notable.class}"
+end
+
+return json

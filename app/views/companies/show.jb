@@ -1,0 +1,5 @@
+{
+  company: @company,
+  contacts: @contacts,
+  job_applications: @job_applications
+}

@@ -1,0 +1,7 @@
+{
+  notes: @notes,
+  params: {
+    sort: params[:sort],
+    direction: params[:direction]
+  }
+}

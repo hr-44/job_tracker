@@ -1,0 +1,9 @@
+{
+  companies: @companies,
+  params: {
+    search: params[:search],
+    category_names: params[:category_names],
+    sort: params[:sort],
+    direction: params[:direction]
+  }
+}

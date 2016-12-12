@@ -1,0 +1,7 @@
+{
+  postings: @postings,
+  params: {
+    sort: params[:sort],
+    direction: params[:direction]
+  }
+}

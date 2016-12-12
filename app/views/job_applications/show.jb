@@ -1,0 +1,4 @@
+{
+  job_application: @job_application,
+  notes: @notes
+}

@@ -1,0 +1,7 @@
+{
+  cover_letters: @cover_letters,
+  params: {
+    sort: params[:sort],
+    direction: params[:direction]
+  }
+}

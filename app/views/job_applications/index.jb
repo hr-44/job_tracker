@@ -1,0 +1,8 @@
+{
+  job_applications: @job_applications,
+  params: {
+    sort: params[:sort],
+    direction: params[:direction],
+    active: params[:active]
+  }
+}

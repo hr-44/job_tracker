@@ -1,0 +1,7 @@
+{
+  suggestions: @suggestions,
+  params: {
+    term: params[:term],
+    key: params[:key]
+  }
+}
