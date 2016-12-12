@@ -3,6 +3,8 @@ class ApplicationController < ActionController::API
   include AbstractController::Helpers
   # support for signed, encrypted cookies, requires `ActionDispatch::Cookies` middleware
   include ActionController::Cookies
+  # support for layouts when rendering
+  include ActionView::Layouts
 
   # TODO: re-enable this protection later on...
   # Prevent CSRF attacks by raising an exception.
