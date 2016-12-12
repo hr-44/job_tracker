@@ -50,20 +50,18 @@ class NotesController < ApplicationController
       # successful_creation(format, @notable, message)
       render(action: :show, status: :created, formats: :json)
     else
-      failed_creation(format, note)
+      failed_creation(note)
     end
   end
 
   # PATCH/PUT /notes/1
   # PATCH/PUT /notes/1.json
   def update
-    respond_to do |format|
-      if note.update(note_params)
-        message = "Successfully updated Note for #{@notable.class}"
-        successful_update(format, @notable, message)
-      else
-        failed_update(format, note)
-      end
+    if note.update(note_params)
+      message = "Successfully updated Note for #{@notable.class}"
+      successful_update(@notable, message)
+    else
+      failed_update(note)
     end
   end
 

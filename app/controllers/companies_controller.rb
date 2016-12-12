@@ -56,12 +56,10 @@ class CompaniesController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      if company.update(company_params)
-        successful_update(format, company)
-      else
-        failed_update(format, company)
-      end
+    if company.update(company_params)
+      successful_update(company)
+    else
+      failed_update(company)
     end
   end
 

@@ -67,12 +67,10 @@ class JobApplicationsController < ApplicationController
   # PATCH/PUT /job_applications/1
   # PATCH/PUT /job_applications/1.json
   def update
-    respond_to do |format|
-      if job_application.update(job_application_params_with_associated_ids)
-        successful_update(format, job_application)
-      else
-        failed_update(format, job_application)
-      end
+    if job_application.update(job_application_params_with_associated_ids)
+      successful_update(job_application)
+    else
+      failed_update(job_application)
     end
   end
 

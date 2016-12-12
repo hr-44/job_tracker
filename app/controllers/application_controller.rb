@@ -1,8 +1,6 @@
 class ApplicationController < ActionController::API
   # support for `helper_method`
   include AbstractController::Helpers
-  # support for `respond_to`
-  include ActionController::MimeResponds
   # support for signed, encrypted cookies, requires `ActionDispatch::Cookies` middleware
   include ActionController::Cookies
 
