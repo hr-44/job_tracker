@@ -62,7 +62,7 @@ module JobApplications
         json = {
           cover_letter: cover_letter
         }
-        render(json: json)
+        render(json: json, status: :created)
       else
         json = {
           text: cover_letter.errors

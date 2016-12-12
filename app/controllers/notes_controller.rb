@@ -46,9 +46,7 @@ class NotesController < ApplicationController
     @note = build_note
 
     if note.save
-      # message = "Note created for #{@notable.class}"
-      # successful_creation(format, @notable, message)
-      render(action: :show, status: :created, formats: :json)
+      successful_creation(@notable)
     else
       failed_creation(note)
     end

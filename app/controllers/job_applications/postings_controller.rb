@@ -59,7 +59,7 @@ module JobApplications
         json = {
           posting: posting
         }
-        render(json: json)
+        render(json: json, status: :created)
       else
         json = {
           text: posting.errors
