@@ -5,7 +5,7 @@ gem 'pg', '~> 0.18.4'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-gem 'jbuilder', '~> 2.6'
+gem 'jb', '~> 0.4.1'
 
 # semantic urls
 gem 'friendly_id', '~> 5.1.0'
