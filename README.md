@@ -7,12 +7,24 @@ JSON-serving API-only application, in Rails 5.
 
 ## Development
 
-#### Installations, dependencies
+The official [Rails Guide](http://guides.rubyonrails.org/) has a lot more detail.
+Here's enough to get started.
+
+### Installations, dependencies
 
 Install app dependencies: `bundle install`
 
 Requires `redis` and `postgres`. Make sure the system services are running
 before you start the server or run tests.
+
+#### DB
+
+Create DB, load schema, seed with dummy data:
+
+`bundle exec rails db:setup`
+
+*PRO-TIP*: Don't track your actual job search with the development database. Use
+production environment database for that.
 
 #### Tests
 
@@ -27,6 +39,17 @@ before you start the server or run tests.
 Type `bundle exec rails routes` to see a fully-generated list of API routes.
 Pass the `-g` flag to grep for routes from a specific controller namespace:
 `bundle exec rails routes -g job_applications`
+
+##### Postman
+
+You can use this
+[postman collection](https://www.getpostman.com/collections/4e66023066287e7bbd1e)
+to get yourself started on API calls.
+
+Most resources are protected. You'll have to be authorized to do pretty much
+anything (the original project is a public app). For now, you can authorize
+yourself by sending a `POST` to `/login`. Use the request in the postman
+collection's "auth" folder.
 
 ### Resources
 
