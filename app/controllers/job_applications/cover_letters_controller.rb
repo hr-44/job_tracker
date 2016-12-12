@@ -18,56 +18,30 @@ module JobApplications
       @cover_letters = collection_belonging_to_user
       @cover_letters = @cover_letters.sorted
       @cover_letters = custom_index_sort if params[:sort]
-      json = {
-        cover_letters: @cover_letters,
-        params: {
-          sort: params[:sort],
-          direction: params[:direction]
-        }
-      }
-      render(json: json)
+      render(:index)
     end
 
     # GET /cover_letters/1
     # GET /cover_letters/1.json
     def show
-      json = {
-        cover_letter: cover_letter
-      }
-      render(json: json)
+      render(:show)
     end
 
     # POST /cover_letters
     # POST /cover_letters.json
     def create
       @cover_letter = CoverLetter.new(cover_letter_params_with_associated_ids)
-
-      if cover_letter.save
-        json = {
-          cover_letter: cover_letter
-        }
-        render(json: json, status: :created)
-      else
-        json = {
-          text: cover_letter.errors
-        }
-        render(json: json, status: 409)
-      end
+      save_and_respond(cover_letter)
     end
 
     # PATCH/PUT /cover_letters/1
     # PATCH/PUT /cover_letters/1.json
     def update
       if cover_letter.update(cover_letter_params)
-        json = {
-          cover_letter: cover_letter
-        }
-        render(json: json)
+        successful_update
       else
-        json = {
-          text: cover_letter.errors
-        }
-        render(json: json, status: 409)
+        @errors = cover_letter.errors
+        render_errors(status: 409)
       end
     end
 
@@ -75,10 +49,9 @@ module JobApplications
     # DELETE /cover_letters/1.json
     def destroy
       @cover_letter.destroy
-      json = {
-        message: "Cover letter for, #{@cover_letter.job_application_title}, deleted"
-      }
-      render(json: json)
+      @message = "Cover letter for, #{@cover_letter.job_application_title}, deleted"
+
+      render('shared/destroy')
     end
 
     private

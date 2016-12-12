@@ -1,40 +1,48 @@
 class UsersController < ApplicationController
+  include ScaffoldedActions
+
+  attr_reader :user
+
   before_action :logged_in_user, only: [:show, :update, :destroy]
   before_action :set_user,       only: [:show, :update, :destroy]
   before_action :check_user,     only: [:show, :update, :destroy]
 
   # GET /users/1
   def show
+    @filtered_user_info = User.filter_user_info(user)
+    render(:show)
   end
 
   # POST /users
   def create
     @user = new_account(user_params)
 
-    if @user.save
-      log_in @user
+    if user.save
+      log_in user
       # TODO: send this message as part of json response
       # flash[:success] = 'Thanks for signing up.'
       redirect_to root_url
     else
-      # TODO: send client an error message
+      @errors = user.errors
+      render_errors
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
+    if user.update(user_params)
       # TODO: send this message as part of json response
       # flash[:success] = 'Profile was successfully updated.'
       redirect_to user_path
     else
-      # TODO: send back an error message
+      @errors = user.errors
+      render_errors
     end
   end
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    user.destroy
     redirect_to user_url, info: 'Profile was successfully destroyed.'
   end
 
@@ -58,6 +66,6 @@ class UsersController < ApplicationController
   end
 
   def check_user
-    redirect_to(root_url) unless current_user?(@user)
+    redirect_to(root_url) unless current_user?(user)
   end
 end

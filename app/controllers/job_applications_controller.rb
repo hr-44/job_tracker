@@ -18,17 +18,7 @@ class JobApplicationsController < ApplicationController
     @job_applications = collection_belonging_to_user
     @job_applications = @job_applications.active(active).sorted
     @job_applications = custom_index_sort if params[:sort]
-
-    json = {
-      job_applications: @job_applications,
-      params: {
-        sort: params[:sort],
-        direction: params[:direction],
-        active: params[:active]
-      }
-    }
-
-    render(json: json)
+    render(:index)
   end
 
   # GET /job_applications/1
@@ -37,13 +27,7 @@ class JobApplicationsController < ApplicationController
     @notable = job_application # TODO: remove variable? not sure it's needed w/ JSON only
     @notes = @notable.notes
     @note = Note.new
-
-    json = {
-      job_application: job_application,
-      notes: @notes
-    }
-
-    render(json: json)
+    render(:show)
   end
 
   # POST /job_applications
@@ -57,9 +41,10 @@ class JobApplicationsController < ApplicationController
   # PATCH/PUT /job_applications/1.json
   def update
     if job_application.update(job_application_params_with_associated_ids)
-      successful_update(job_application)
+      successful_update
     else
-      failed_update(job_application)
+      @errors = job_application.errors
+      render_errors
     end
   end
 
@@ -67,10 +52,9 @@ class JobApplicationsController < ApplicationController
   # DELETE /job_applications/1.json
   def destroy
     @job_application.destroy
-    json = {
-      message: "Job application, #{job_application.title}, deleted"
-    }
-    render(json: json)
+    @message = "Job application, #{job_application.title}, deleted"
+
+    render('shared/destroy')
   end
 
   private

@@ -6,11 +6,7 @@ class CategoriesController < ApplicationController
 
   def show
     @companies = category.companies
-    json = {
-      category: category,
-      companies: companies
-    }
-    render(json: json)
+    render(:show)
   end
 
   private

@@ -9,35 +9,15 @@ class CompaniesController < ApplicationController
   before_action :logged_in_user
   before_action :set_company, only: [:show, :update]
 
-  # GET /companies
-  # GET /companies.json
   def index
     @companies = search_filter_sort
-    json = {
-      companies: @companies,
-      params: {
-        search: params[:search],
-        category_names: params[:category_names],
-        sort: params[:sort],
-        direction: params[:direction]
-      }
-    }
-    render(json: json)
+    render(:index)
   end
 
-  # GET /companies/1
-  # GET /companies/1.json
   def show
     @contacts = contacts_belonging_to_user_and_current_company
     @job_applications = job_applications_belonging_to_user_and_current_company
-
-    json = {
-      company: company,
-      contacts: @contacts,
-      job_applications: @job_applications
-    }
-
-    render(json: json)
+    render(:show)
   end
 
   def create
@@ -47,9 +27,10 @@ class CompaniesController < ApplicationController
 
   def update
     if company.update(company_params)
-      successful_update(company)
+      successful_update
     else
-      failed_update(company)
+      @errors = company.errors
+      render_errors
     end
   end
 

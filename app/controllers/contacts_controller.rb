@@ -17,14 +17,7 @@ class ContactsController < ApplicationController
     @contacts = collection_belonging_to_user
     @contacts = @contacts.sorted
     @contacts = custom_index_sort if params[:sort]
-    json = {
-      contacts: @contacts,
-      params: {
-        sort: params[:sort],
-        direction: params[:direction]
-      }
-    }
-    render(json: json)
+    render(:index)
   end
 
   # GET /contacts/1
@@ -33,42 +26,24 @@ class ContactsController < ApplicationController
     @notable = contact # TODO: remove variable? not sure it's needed w/ JSON only
     @notes = @notable.notes
     @note = Note.new
-    json = {
-      contact: contact,
-      notes: @notes
-    }
-    render(json: json)
+    render(:show)
   end
 
   # POST /contacts
   # POST /contacts.json
   def create
     @contact = Contact.new(contact_params_with_associated_ids)
-
-    if contact.save
-      # TODO: DRY up, invoke the 'show' action
-      json = {
-        contact: contact,
-        notes: contact.notes
-      }
-      render(json: json, status: :created)
-    else
-      render(json: contact.errors, status: :unprocessable_entity)
-    end
+    save_and_respond(contact)
   end
 
   # PATCH/PUT /contacts/1
   # PATCH/PUT /contacts/1.json
   def update
     if contact.update(contact_params_with_associated_ids)
-      # TODO: DRY up, invoke the 'show' action
-      json = {
-        contact: contact,
-        notes: contact.notes
-      }
-      render(json: json)
+      successful_update
     else
-      render(json: contact.errors, status: :unprocessable_entity)
+      @errors = contact.errors
+      render_errors
     end
   end
 
@@ -76,10 +51,9 @@ class ContactsController < ApplicationController
   # DELETE /contacts/1.json
   def destroy
     @contact.destroy
-    json = {
-      message: "Contact, #{contact.name}, deleted"
-    }
-    render(json: json)
+    @message = "Contact, #{contact.name}, deleted"
+
+    render('shared/destroy')
   end
 
   private

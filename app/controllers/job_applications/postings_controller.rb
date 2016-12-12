@@ -18,56 +18,30 @@ module JobApplications
       @postings = collection_belonging_to_user
       @postings = @postings.sorted
       @postings = custom_index_sort if params[:sort]
-      json = {
-        postings: @postings,
-        params: {
-          sort: params[:sort],
-          direction: params[:direction]
-        }
-      }
-      render(json: json)
+      render(:index)
     end
 
     # GET /postings/1
     # GET /postings/1.json
     def show
-      json = {
-        posting: posting
-      }
-      render(json: json)
+      render(:show)
     end
 
     # POST /postings
     # POST /postings.json
     def create
       @posting = Posting.new(posting_params_with_associated_ids)
-
-      if posting.save
-        json = {
-          posting: posting
-        }
-        render(json: json, status: :created)
-      else
-        json = {
-          text: posting.errors
-        }
-        render(json: json, status: 409)
-      end
+      save_and_respond(posting)
     end
 
     # PATCH/PUT /postings/1
     # PATCH/PUT /postings/1.json
     def update
       if posting.update(posting_params)
-        json = {
-          posting: posting
-        }
-        render(json: json)
+        successful_update
       else
-        json = {
-          text: posting.errors
-        }
-        render(json: json, status: 409)
+        @errors = posting.errors
+        render_errors(status: 409)
       end
     end
 
@@ -75,10 +49,9 @@ module JobApplications
     # DELETE /postings/1.json
     def destroy
       @posting.destroy
-      json = {
-        message: "Posting, #{@posting.job_title}, deleted"
-      }
-      render(json: json)
+      @message = "Posting, #{@posting.job_title}, deleted"
+
+      render('shared/destroy')
     end
 
     private

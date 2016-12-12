@@ -4,7 +4,7 @@ module Sessions
 
     def destroy
       log_out if logged_in?
-      render(json: { message: 'You have logged out' })
+      render('sessions/logout')
     end
   end
 end

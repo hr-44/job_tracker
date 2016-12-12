@@ -17,18 +17,11 @@ class NotesController < ApplicationController
   def index
     @notes = collection_belonging_to_user
     @notes = custom_index_sort if params[:sort]
-    json = {
-      notes: @notes,
-      params: {
-        sort: params[:sort],
-        direction: params[:direction]
-      }
-    }
-    render(json: json)
+    render(:index)
   end
 
   def show
-    render(formats: :json)
+    render(:show)
   end
 
   # POST /notes
@@ -37,9 +30,10 @@ class NotesController < ApplicationController
     @note = build_note
 
     if note.save
-      successful_creation(@notable)
+      successful_creation
     else
-      failed_creation(note)
+      @errors = note.errors
+      render_errors
     end
   end
 
@@ -47,10 +41,10 @@ class NotesController < ApplicationController
   # PATCH/PUT /notes/1.json
   def update
     if note.update(note_params)
-      message = "Successfully updated Note for #{@notable.class}"
-      successful_update(@notable, message)
+      successful_update
     else
-      failed_update(note)
+      @errors = note.errors
+      render_errors
     end
   end
 
@@ -58,15 +52,7 @@ class NotesController < ApplicationController
   # DELETE /notes/1.json
   def destroy
     @note.destroy
-    notable = @notable
-
-    name_of_notable = notable.class == Contact ? notable.name : notable.title
-
-    json = {
-      message: "Note for, #{name_of_notable}, deleted"
-    }
-
-    render(json: json)
+    render('destroy')
   end
 
   private

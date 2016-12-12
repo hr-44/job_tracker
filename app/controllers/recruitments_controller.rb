@@ -1,4 +1,6 @@
 class RecruitmentsController < ApplicationController
+  include ScaffoldedActions
+
   attr_reader :recruitment, :company
 
   before_action :logged_in_user
@@ -14,7 +16,8 @@ class RecruitmentsController < ApplicationController
       # flash[:success] = 'Client, Agency relationship successfully added'
       redirect_to company
     else
-      # TODO: send client an error message
+      @errors = recruitment.errors
+      render_errors
     end
   end
 

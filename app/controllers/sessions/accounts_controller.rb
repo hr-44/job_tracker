@@ -7,20 +7,17 @@ module Sessions
     def new
       return redirect_to(user_path) if logged_in?
 
-      message = { text: 'Client not logged in. Go to login page.' }
-      render(json: message, status: 302)
+      @message = 'Client not logged in. Go to login page.'
+      render('login', status: 302)
     end
 
     def create
       if authenticated?
         login_authenticated_user
-
-        session[:forwarding_url] ?
-          redirect_back_or(root_url) :
-          render(json: { text: 'You have logged in' })
+        redirect_or_show_success
       else
-        message = { text: 'Invalid email/password combination.' }
-        render(json: message, status: 401)
+        @message = 'Invalid email/password combination.'
+        render('login', status: 401)
       end
     end
 
@@ -75,6 +72,15 @@ module Sessions
     def remember_me?
       remember_me = params[:session][:remember_me]
       remember_me == '1'
+    end
+
+    def redirect_or_show_success
+      if session[:forwarding_url]
+        redirect_back_or(root_url)
+      else
+        @message = 'You have logged in'
+        render('login')
+      end
     end
   end
 end
