@@ -3,39 +3,25 @@ module ScaffoldedActions
 
   def save_and_respond(object)
     if object.save
-      successful_creation(object)
+      successful_creation
     else
-      failed_creation(object)
+      render_errors
     end
   end
 
-  def successful_creation(object, message = nil)
-    message ||= "#{model} was successfully created."
-    canned_success(object, message, :created)
+  def successful_creation
+    render_show(status: :created)
   end
 
-  def failed_creation(object)
-    render json: object.errors, status: :unprocessable_entity
+  def successful_update
+    render_show(status: :ok)
   end
 
-  def successful_update(object, message = nil)
-    message ||= "#{model} was successfully updated."
-    canned_success(object, message, :ok)
+  def render_errors(status: :unprocessable_entity)
+    render('shared/errors', status: status)
   end
 
-  def failed_update(object)
-    render json: object.errors, status: :unprocessable_entity
-  end
-
-  def destruction(redirect_url)
-    # TODO: send this message as part of json response
-    # flash = { info: "#{model} was successfully destroyed." }
-    head :no_content
-  end
-
-  def canned_success(object, message, status)
-    # TODO: send this message as part of json response
-    # flash = { success: message }
-    render :show, status: status, location: object
+  def render_show(status: :ok)
+    render(:show, status: status, content_type: :json)
   end
 end
