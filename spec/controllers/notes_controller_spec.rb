@@ -12,7 +12,7 @@ RSpec.describe NotesController, type: :controller do
     before(:each) do
       allow(Note).to receive(:sorted).and_return(note)
       allow(@controller).to receive(:custom_index_sort).and_return([note])
-      get(:index, sort: true)
+      get(:index, params: { sort: true })
     end
 
     xit 'returns a 200' do
@@ -45,7 +45,7 @@ RSpec.describe NotesController, type: :controller do
           stub_note
           stub_user
           stub_notable(contact)
-          get(:show, contact_id: 'joe-schmoe', id: 1)
+          get(:show, params: { contact_id: 'joe-schmoe', id: 1 })
         end
       end
     end
@@ -56,7 +56,7 @@ RSpec.describe NotesController, type: :controller do
           stub_note
           stub_user
           stub_notable(job_application)
-          get(:show, job_application_id: 1, id: 1)
+          get(:show, params: { job_application_id: 1, id: 1 })
         end
       end
     end
@@ -86,14 +86,14 @@ RSpec.describe NotesController, type: :controller do
 
       it_behaves_like '#new via host resource' do
         before(:each) do
-          get(:new, contact_id: 1)
+          get(:new, params: { contact_id: 1 })
         end
       end
 
       it 'calls #build_note' do
         stub_notable(host)
         expect(controller).to receive(:build_note)
-        get(:new, contact_id: 1)
+        get(:new, params: { contact_id: 1 })
       end
     end
 
@@ -102,14 +102,14 @@ RSpec.describe NotesController, type: :controller do
 
       it_behaves_like '#new via host resource' do
         before(:each) do
-          get(:new, job_application_id: 1)
+          get(:new, params: { job_application_id: 1 })
         end
       end
 
       it 'calls #build_note' do
         stub_notable(host)
         expect(controller).to receive(:build_note)
-        get(:new, contact_id: 1)
+        get(:new, params: { contact_id: 1 })
       end
     end
   end
@@ -139,7 +139,7 @@ RSpec.describe NotesController, type: :controller do
       it_behaves_like '#edit via host resource' do
         before(:each) do
           stub_notable(contact)
-          get(:edit, contact_id: 'joe-schmoe', id: 1)
+          get(:edit, params: { contact_id: 'joe-schmoe', id: 1 })
         end
       end
     end
@@ -148,7 +148,7 @@ RSpec.describe NotesController, type: :controller do
       it_behaves_like '#edit via host resource' do
         before(:each) do
           stub_notable(job_application)
-          get(:edit, job_application_id: 1, id: 1)
+          get(:edit, params: { job_application_id: 1, id: 1 })
         end
       end
     end
@@ -165,14 +165,14 @@ RSpec.describe NotesController, type: :controller do
           allow(controller).to receive(:respond_to)
           allow(controller).to receive(:render)
           expect(controller).to receive(:build_note)
-          post(:create, post_attr)
+          post(:create, params: post_attr)
         end
       end
 
       context 'with valid params' do
         before(:each) do
           allow(note).to receive(:save).and_return(true)
-          post(:create, post_attr)
+          post(:create, params: post_attr)
         end
 
         it 'sets @note to a new Note object' do
@@ -186,7 +186,7 @@ RSpec.describe NotesController, type: :controller do
       context 'with invalid params' do
         before(:each) do
           allow(note).to receive(:save).and_return(false)
-          post(:create, post_attr)
+          post(:create, params: post_attr)
         end
 
         it 'assigns a newly created but unsaved note as @note' do
@@ -245,15 +245,15 @@ RSpec.describe NotesController, type: :controller do
         end
 
         it 'assigns the requested note as @note' do
-          put(:update, update_attr)
+          put(:update, params: update_attr)
           expect(assigns(:note)).to eq(note)
         end
         it 'calls update on the requested note' do
           expect(note).to receive(:update)
-          put(:update, update_attr)
+          put(:update, params: update_attr)
         end
         it 'redirects to notable' do
-          put(:update, update_attr)
+          put(:update, params: update_attr)
           expect(response).to redirect_to(notable)
         end
       end
@@ -261,7 +261,7 @@ RSpec.describe NotesController, type: :controller do
       context 'with invalid params' do
         before(:each) do
           allow(note).to receive(:update).and_return(false)
-          put(:update, update_attr)
+          put(:update, params: update_attr)
         end
 
         it 'assigns the note as @note' do
@@ -310,10 +310,10 @@ RSpec.describe NotesController, type: :controller do
 
       it 'calls destroy on the requested note' do
         expect(note).to receive(:destroy)
-        delete(:destroy, delete_opts)
+        delete(:destroy, params: delete_opts)
       end
       it 'redirects to the notes list' do
-        delete(:destroy, delete_opts)
+        delete(:destroy, params: delete_opts)
         expect(response).to redirect_to(notable)
       end
     end

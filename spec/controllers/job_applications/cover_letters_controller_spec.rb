@@ -25,7 +25,7 @@ describe JobApplications::CoverLettersController, type: :controller do
 
     describe 'functional tests' do
       before(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'returns a 200' do
@@ -41,7 +41,7 @@ describe JobApplications::CoverLettersController, type: :controller do
 
     describe 'expected method calls' do
       after(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'calls #collection_belonging_to_user' do
@@ -59,7 +59,7 @@ describe JobApplications::CoverLettersController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       stub_before_actions
-      get(:show, job_application_id: 1)
+      get(:show, params: { job_application_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -75,7 +75,7 @@ describe JobApplications::CoverLettersController, type: :controller do
 
   describe 'GET #new' do
     before(:each) do
-      get(:new, job_application_id: 1)
+      get(:new, params: { job_application_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -89,7 +89,7 @@ describe JobApplications::CoverLettersController, type: :controller do
   describe 'GET #edit' do
     before(:each) do
       stub_before_actions
-      get(:edit, job_application_id: 1)
+      get(:edit, params: { job_application_id: 1})
     end
 
     xit 'returns a 200' do
@@ -128,7 +128,7 @@ describe JobApplications::CoverLettersController, type: :controller do
         allow(JobApplications::CoverLetter).to receive(:new).and_return(cover_letter)
       end
       after(:each) do
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'calls #cover_letter_params_with_associated_ids' do
@@ -145,7 +145,7 @@ describe JobApplications::CoverLettersController, type: :controller do
         allow(cover_letter).to receive(:save).and_return(true)
         allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::CoverLetter).to receive(:new).and_return(cover_letter)
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'sets @cover_letter to a new JobApplications::CoverLetter object' do
@@ -160,7 +160,7 @@ describe JobApplications::CoverLettersController, type: :controller do
       before(:each) do
         allow(cover_letter).to receive(:save).and_return(false)
         allow(JobApplications::CoverLetter).to receive(:new).and_return(cover_letter)
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'assigns a newly created but unsaved cover_letter as @cover_letter' do
@@ -194,15 +194,15 @@ describe JobApplications::CoverLettersController, type: :controller do
       end
 
       it 'assigns the requested cover_letter as @cover_letter' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:cover_letter)).to eq(cover_letter)
       end
       it 'calls update on the requested cover_letter' do
         expect(cover_letter).to receive(:update)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'redirects to the cover_letter' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response).to redirect_to(cover_letter.job_application)
       end
     end
@@ -210,7 +210,7 @@ describe JobApplications::CoverLettersController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(cover_letter).to receive(:update).and_return(false)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
 
       it 'assigns the cover_letter as @cover_letter' do
@@ -231,11 +231,11 @@ describe JobApplications::CoverLettersController, type: :controller do
 
     it 'calls destroy on the requested cover_letter' do
       expect(cover_letter).to receive(:destroy)
-      delete(:destroy, job_application_id: 1)
+      delete(:destroy, params: { job_application_id: 1 })
     end
 
     it 'redirects to the cover_letters list' do
-      delete(:destroy, job_application_id: 1)
+      delete(:destroy, params: { job_application_id: 1 })
       expect(response).to redirect_to(cover_letter.job_application)
     end
   end

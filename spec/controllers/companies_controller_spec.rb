@@ -36,7 +36,7 @@ RSpec.describe CompaniesController, type: :controller do
       allow(controller)
         .to receive(:job_applications_belonging_to_user_and_current_company)
         .and_return('job_applications')
-      get(:show, id: 'example-company')
+      get(:show, params: { id: 'example-company' })
     end
 
     xit 'returns a 200' do
@@ -74,7 +74,7 @@ RSpec.describe CompaniesController, type: :controller do
     before(:each) do
       log_in_as(user)
       allow(Company).to receive(:find).and_return(company)
-      get(:edit, id: 'example-company')
+      get(:edit, params: { id: 'example-company' })
     end
 
     xit 'returns a 200' do
@@ -101,7 +101,7 @@ RSpec.describe CompaniesController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(company).to receive(:save).and_return(true)
-        post(:create, company: attr_for_create)
+        post(:create, params: { company: attr_for_create })
       end
 
       it 'sets @company to a new Company object' do
@@ -115,7 +115,7 @@ RSpec.describe CompaniesController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(company).to receive(:save).and_return(false)
-        post(:create, company: attr_for_create)
+        post(:create, params: { company: attr_for_create })
       end
 
       it 'assigns a newly created but unsaved company as @company' do
@@ -146,10 +146,10 @@ RSpec.describe CompaniesController, type: :controller do
 
       it 'calls #update on the company' do
         expect(company).to receive(:update).with(attr_for_update)
-        put(:update, id: 1, company: attr_for_update)
+        put(:update, params: { id: 1, company: attr_for_update })
       end
       it 'redirects to the created company' do
-        put(:update, id: 1, company: attr_for_update)
+        put(:update, params: { id: 1, company: attr_for_update })
         expect(response).to redirect_to(company)
       end
     end
@@ -157,7 +157,7 @@ RSpec.describe CompaniesController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(company).to receive(:update).and_return(false)
-        put(:update, id: 1, company: attr_for_update)
+        put(:update, params: { id: 1, company: attr_for_update })
       end
 
       xit 're-renders the "edit" template' do

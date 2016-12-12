@@ -11,7 +11,7 @@ RSpec.describe SearchSuggestionsController, type: :controller do
         .and_return(foo: 'bar')
       term = '_term'
       key = '_key'
-      get(:index, term: term, key: key)
+      get(:index, params: { term: term, key: key })
     end
 
     it 'returns a 200' do

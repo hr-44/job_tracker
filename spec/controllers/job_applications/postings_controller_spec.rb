@@ -25,7 +25,7 @@ describe JobApplications::PostingsController, type: :controller do
 
     describe 'functional tests' do
       before(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'returns a 200' do
@@ -41,7 +41,7 @@ describe JobApplications::PostingsController, type: :controller do
 
     describe 'expected method calls' do
       after(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'calls #collection_belonging_to_user' do
@@ -59,7 +59,7 @@ describe JobApplications::PostingsController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       stub_before_actions
-      get(:show, job_application_id: 1)
+      get(:show, params: { job_application_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -75,7 +75,7 @@ describe JobApplications::PostingsController, type: :controller do
 
   xdescribe 'GET #new' do
     before(:each) do
-      get(:new, job_application_id: 1)
+      get(:new, params: { job_application_id: 1 })
     end
 
     it 'returns a 200' do
@@ -89,7 +89,7 @@ describe JobApplications::PostingsController, type: :controller do
   describe 'GET #edit' do
     before(:each) do
       stub_before_actions
-      get(:edit, job_application_id: 1)
+      get(:edit, params: { job_application_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -128,7 +128,7 @@ describe JobApplications::PostingsController, type: :controller do
         allow(JobApplications::Posting).to receive(:new).and_return(posting)
       end
       after(:each) do
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'calls #posting_params_with_associated_ids' do
@@ -145,7 +145,7 @@ describe JobApplications::PostingsController, type: :controller do
         allow(posting).to receive(:save).and_return(true)
         allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::Posting).to receive(:new).and_return(posting)
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'sets @posting to a new JobApplications::Posting object' do
@@ -160,7 +160,7 @@ describe JobApplications::PostingsController, type: :controller do
       before(:each) do
         allow(posting).to receive(:save).and_return(false)
         allow(JobApplications::Posting).to receive(:new).and_return(posting)
-        post(:create, attr_for_create)
+        post(:create, params: attr_for_create)
       end
 
       it 'assigns a newly created but unsaved posting as @posting' do
@@ -192,15 +192,15 @@ describe JobApplications::PostingsController, type: :controller do
       end
 
       it 'assigns the requested posting as @posting' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:posting)).to eq(posting)
       end
       it 'calls update on the requested posting' do
         expect(posting).to receive(:update)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'redirects to the posting' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response).to redirect_to(posting.job_application)
       end
     end
@@ -208,7 +208,7 @@ describe JobApplications::PostingsController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(posting).to receive(:update).and_return(false)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
 
       it 'assigns the posting as @posting' do
@@ -229,11 +229,11 @@ describe JobApplications::PostingsController, type: :controller do
 
     it 'calls destroy on the requested posting' do
       expect(posting).to receive(:destroy)
-      delete(:destroy, job_application_id: 1)
+      delete(:destroy, params: { job_application_id: 1 })
     end
 
     it 'redirects to the postings list' do
-      delete(:destroy, job_application_id: 1)
+      delete(:destroy, params: { job_application_id: 1 })
       expect(response).to redirect_to(posting.job_application)
     end
   end

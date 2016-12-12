@@ -13,7 +13,7 @@ describe RecruitmentsController, type: :controller do
     before(:each) do
       allow(company).to receive(:id).and_return(1)
       allow(Company).to receive(:find).and_return(company)
-      get(:new, company_id: 1)
+      get(:new, params: { company_id: 1 })
     end
 
     xit 'renders the new template' do
@@ -56,7 +56,7 @@ describe RecruitmentsController, type: :controller do
       context 'when recruitment object does not save' do
         before(:each) do
           allow(recruitment).to receive(:save).and_return(false)
-          post(:create, company_id: 1, recruitment: { client_name: 'foo' })
+          post(:create, params: { company_id: 1, recruitment: { client_name: 'foo' } })
         end
 
         xit 'renders the new template' do
@@ -66,7 +66,7 @@ describe RecruitmentsController, type: :controller do
 
       context 'functional tests' do
         before(:each) do
-          post(:create, company_id: 1, recruitment: { client_name: 'foo' })
+          post(:create, params: { company_id: 1, recruitment: { client_name: 'foo' } })
         end
 
         it 'assigns a new Recruitment object to @recruitment' do
@@ -82,7 +82,7 @@ describe RecruitmentsController, type: :controller do
 
       context 'expected method calls' do
         after(:each) do
-          post(:create, company_id: 1, recruitment: { client_name: 'foo' })
+          post(:create, params: { company_id: 1, recruitment: { client_name: 'foo' } })
         end
 
         it 'calls #load_company' do
@@ -128,7 +128,7 @@ describe RecruitmentsController, type: :controller do
       context 'when recruitment object does not save' do
         before(:each) do
           allow(recruitment).to receive(:save).and_return(false)
-          post(:create, company_id: 1, recruitment: { agency_name: 'foo' })
+          post(:create, params: { company_id: 1, recruitment: { agency_name: 'foo' } })
         end
 
         xit 'renders the new template' do
@@ -138,7 +138,7 @@ describe RecruitmentsController, type: :controller do
 
       context 'functional tests' do
         before(:each) do
-          post(:create, company_id: 2, recruitment: { agency_name: 'bar' })
+          post(:create, params: { company_id: 2, recruitment: { agency_name: 'bar' } })
         end
 
         it 'assigns a new Recruitment object to @recruitment' do
@@ -154,7 +154,7 @@ describe RecruitmentsController, type: :controller do
 
       context 'expected method calls' do
         after(:each) do
-          post(:create, company_id: 1, recruitment: { agency_name: 'foo' })
+          post(:create, params: { company_id: 1, recruitment: { agency_name: 'foo' } })
         end
 
         it 'calls #load_company' do
@@ -192,10 +192,10 @@ describe RecruitmentsController, type: :controller do
 
     it 'calls #destroy on the recruitment object' do
       expect(recruitment).to receive(:destroy)
-      delete(:destroy, destroy_params)
+      delete(:destroy, params: destroy_params)
     end
     it 'redirects to company' do
-      delete(:destroy, destroy_params)
+      delete(:destroy, params: destroy_params)
       expect(response).to redirect_to company
     end
   end

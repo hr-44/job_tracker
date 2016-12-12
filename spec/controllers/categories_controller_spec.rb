@@ -16,18 +16,18 @@ describe CategoriesController, type: :controller do
 
     it 'the category is not nil' do
       expect(controller).to receive(:category)
-      get :show, id: 1
+      get(:show, params: { id: 1 })
     end
     it 'calls #companies on the category' do
       expect(category).to receive(:companies)
-      get :show, id: 1
+      get(:show, params: { id: 1 })
     end
     it 'returns http success' do
-      get :show, id: 1
+      get(:show, params: { id: 1 })
       expect(response).to have_http_status(:success)
     end
     it 'sets value for @companies' do
-      get :show, id: 1
+      get(:show, params: { id: 1 })
       expect(assigns(:companies)).to eq companies
     end
   end

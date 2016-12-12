@@ -8,7 +8,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'GET #show' do
     it 'assigns the requested user as @user' do
       allow(User).to receive(:find).and_return(user)
-      get(:show, id: user.id)
+      get(:show, params: { id: user.id })
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -32,7 +32,7 @@ RSpec.describe UsersController, type: :controller do
   describe 'GET #edit' do
     it 'assigns the requested user as @user' do
       allow(User).to receive(:find).and_return(user)
-      get(:edit, id: user.id)
+      get(:edit, params: { id: user.id })
       expect(assigns(:user)).to eq(user)
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe UsersController, type: :controller do
 
     shared_examples_for 'calls these methods every time' do
       after(:each) do
-        post(:create, users_account: attr_for_create)
+        post(:create, params: { users_account: attr_for_create })
       end
 
       it 'calls #new_account' do
@@ -71,15 +71,15 @@ RSpec.describe UsersController, type: :controller do
       it_behaves_like 'calls these methods every time'
 
       it 'sets @user to a new User' do
-        post(:create, users_account: attr_for_create)
+        post(:create, params: { users_account: attr_for_create })
         expect(assigns(:user)).to be_a(User)
       end
       it 'calls log_in' do
         expect(controller).to receive(:log_in)
-        post(:create, users_account: attr_for_create)
+        post(:create, params: { users_account: attr_for_create })
       end
       it 'redirects to the created user' do
-        post(:create, users_account: attr_for_create)
+        post(:create, params: { users_account: attr_for_create })
         expect(response).to redirect_to(root_path)
       end
     end
@@ -87,7 +87,7 @@ RSpec.describe UsersController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(user).to receive(:save).and_return(false)
-        post(:create, users_account: attr_for_create)
+        post(:create, params: { users_account: attr_for_create })
       end
 
       it_behaves_like 'calls these methods every time'
@@ -114,16 +114,16 @@ RSpec.describe UsersController, type: :controller do
 
       it 'updates the requested user' do
         expect(user).to receive(:update)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
 
       it 'assigns the requested user as @user' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:user)).to eq(user)
       end
 
       it 'redirects to the user' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response).to redirect_to(user_url)
       end
     end
@@ -131,7 +131,7 @@ RSpec.describe UsersController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(user).to receive(:update).and_return(false)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
 
       it 'assigns the user as @user' do
@@ -152,10 +152,10 @@ RSpec.describe UsersController, type: :controller do
 
     it 'calls destroy on user' do
       expect(user).to receive(:destroy)
-      delete(:destroy, id: 'foo')
+      delete(:destroy, params: { id: 'foo' })
     end
     it 'redirects to the users list' do
-      delete(:destroy, id: 'foo')
+      delete(:destroy, params: { id: 'foo' })
       expect(response).to redirect_to(user_url)
     end
   end

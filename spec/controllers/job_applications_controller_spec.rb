@@ -28,7 +28,7 @@ RSpec.describe JobApplicationsController, type: :controller do
 
     describe 'functional tests' do
       before(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'returns a 200' do
@@ -44,7 +44,7 @@ RSpec.describe JobApplicationsController, type: :controller do
 
     describe 'expected method calls' do
       after(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'calls #collection_belonging_to_user' do
@@ -65,7 +65,7 @@ RSpec.describe JobApplicationsController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       stub_before_actions
-      get(:show, id: 1)
+      get(:show, params: { id: 1 })
     end
 
     xit 'returns a 200' do
@@ -81,7 +81,7 @@ RSpec.describe JobApplicationsController, type: :controller do
       end
       it 'calls #notes on @notable' do
         expect(assigns(:notable)).to receive(:notes)
-        get(:show, id: 1)
+        get(:show, params: { id: 1 })
       end
       it 'assigns @notes to @notable.notes' do
         expected = Note::ActiveRecord_Associations_CollectionProxy
@@ -95,7 +95,7 @@ RSpec.describe JobApplicationsController, type: :controller do
 
   describe 'GET #new' do
     before(:each) do
-      get(:new, company_id: 1)
+      get(:new, params: { company_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -109,7 +109,7 @@ RSpec.describe JobApplicationsController, type: :controller do
   describe 'GET #edit' do
     before(:each) do
       stub_before_actions
-      get(:edit, id: 1)
+      get(:edit, params: { id: 1 })
     end
 
     xit 'returns a 200' do
@@ -141,7 +141,7 @@ RSpec.describe JobApplicationsController, type: :controller do
         allow(controller).to receive(:render).and_return(true)
       end
       after(:each) do
-        post(:create, contact: attr_for_create)
+        post(:create, params: { contact: attr_for_create })
       end
 
       it 'calls #contact_params_with_associated_ids' do
@@ -159,7 +159,7 @@ RSpec.describe JobApplicationsController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(job_application).to receive(:save).and_return(true)
-        post(:create, job_application: attr_for_create)
+        post(:create, params: { job_application: attr_for_create })
       end
 
       it 'sets @job_application to a new JobApplication object' do
@@ -173,7 +173,7 @@ RSpec.describe JobApplicationsController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(job_application).to receive(:save).and_return(false)
-        post(:create, job_application: attr_for_create)
+        post(:create, params: { job_application: attr_for_create })
       end
 
       it 'assigns a newly created but unsaved job_application as @job_application' do
@@ -210,18 +210,18 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'calls #job_application_params_with_associated_ids' do
         expect(controller)
           .to receive(:job_application_params_with_associated_ids)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'calls update on the requested job_application' do
         expect(job_application).to receive(:update)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'assigns the requested job_application as @job_application' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:job_application)).to eq(job_application)
       end
       it 'redirects to the job_application' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response).to redirect_to(job_application)
       end
     end
@@ -234,14 +234,14 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'calls #job_application_params_with_associated_ids' do
         expect(controller)
           .to receive(:job_application_params_with_associated_ids)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'assigns the job_application as @job_application' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:job_application)).to eq(job_application)
       end
       xit 're-renders the "edit" template' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response).to render_template('edit')
       end
     end
@@ -255,11 +255,11 @@ RSpec.describe JobApplicationsController, type: :controller do
 
     it 'calls destroy on the requested job_application' do
       expect(job_application).to receive(:destroy)
-      delete(:destroy, id: 1)
+      delete(:destroy, params: { id: 1 })
     end
 
     it 'redirects to the job_applications list' do
-      delete(:destroy, id: 1)
+      delete(:destroy, params: { id: 1 })
       expect(response).to redirect_to(job_applications_url)
     end
   end

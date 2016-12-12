@@ -13,7 +13,7 @@ describe Sessions::OmniAuthUsersController, type: :controller do
     context 'success' do
       before(:each) do
         allow(@controller).to receive(:log_in).and_return(true)
-        post(:create, provider: 'foo')
+        post(:create,params: {  provider: 'foo' })
       end
 
       it 'redirects to root' do
@@ -27,12 +27,12 @@ describe Sessions::OmniAuthUsersController, type: :controller do
       end
 
       it 'redirects to failure action' do
-        post(:create, provider: 'foo')
+        post(:create, params: { provider: 'foo' })
         expect(response).to redirect_to(action: 'failure')
       end
       it 'returns early & does not redirect user to root url' do
         expect(@controller).not_to receive(:redirect_to).with(root_url)
-        post(:create, provider: 'foo')
+        post(:create, params: { provider: 'foo' })
       end
     end
   end

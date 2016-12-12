@@ -22,7 +22,7 @@ RSpec.describe ContactsController, type: :controller do
 
     describe 'functional tests' do
       before(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'returns a 200' do
@@ -44,7 +44,7 @@ RSpec.describe ContactsController, type: :controller do
 
     describe 'expected method calls' do
       after(:each) do
-        get(:index, sort: true)
+        get(:index, params: { sort: true })
       end
 
       it 'calls #collection_belonging_to_user' do
@@ -62,7 +62,7 @@ RSpec.describe ContactsController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       stub_before_actions
-      get(:show, id: 'joe-schmoe')
+      get(:show, params: { id: 'joe-schmoe' })
     end
 
     it 'returns a 200' do
@@ -81,7 +81,7 @@ RSpec.describe ContactsController, type: :controller do
       end
       it 'calls #notes on @notable' do
         expect(assigns(:notable)).to receive(:notes)
-        get(:show, id: 'joe-schmoe')
+        get(:show, params: { id: 'joe-schmoe' })
       end
       it 'assigns @notes to @notable.notes' do
         expected = Note::ActiveRecord_Associations_CollectionProxy
@@ -95,7 +95,7 @@ RSpec.describe ContactsController, type: :controller do
 
   describe 'GET #new' do
     before(:each) do
-      get(:new, company_id: 1)
+      get(:new, params: { company_id: 1 })
     end
 
     xit 'returns a 200' do
@@ -109,7 +109,7 @@ RSpec.describe ContactsController, type: :controller do
   describe 'GET #edit' do
     before(:each) do
       stub_before_actions
-      get(:edit, id: 'joe-schmoe')
+      get(:edit, params: { id: 'joe-schmoe' })
     end
 
     xit 'returns a 200' do
@@ -146,7 +146,7 @@ RSpec.describe ContactsController, type: :controller do
         allow(controller).to receive(:render).and_return(true)
       end
       after(:each) do
-        post(:create, contact: attr_for_create)
+        post(:create, params: { contact: attr_for_create })
       end
 
       it 'calls #contact_params_with_associated_ids' do
@@ -160,7 +160,7 @@ RSpec.describe ContactsController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(contact).to receive(:save).and_return(true)
-        post(:create, contact: attr_for_create)
+        post(:create, params: { contact: attr_for_create })
       end
 
       it 'assigns a newly created contact to @contact' do
@@ -174,7 +174,7 @@ RSpec.describe ContactsController, type: :controller do
     context 'with invalid params' do
       before(:each) do
         allow(contact).to receive(:save).and_return(false)
-        post(:create, contact: attr_for_create)
+        post(:create, params: { contact: attr_for_create })
       end
 
       it 'assigns a newly created contact to @contact' do
@@ -211,18 +211,18 @@ RSpec.describe ContactsController, type: :controller do
 
       it 'calls #contact_params_with_associated_ids' do
         expect(controller).to receive(:contact_params_with_associated_ids)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'calls #update on the requested contact' do
         expect(contact).to receive(:update).with(attr_for_update)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'assigns the requested contact as @contact' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:contact)).to eq(contact)
       end
       it 'has this shape' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         obj = JSON.parse(response.body)
         expect(obj).to be_a(Hash)
         expect(obj['contact']).to be_a(Hash)
@@ -237,14 +237,14 @@ RSpec.describe ContactsController, type: :controller do
 
       it 'calls #contact_params_with_associated_ids' do
         expect(controller).to receive(:contact_params_with_associated_ids)
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
       end
       it 'assigns the contact as @contact' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(assigns(:contact)).to eq(contact)
       end
       it 'sends HTTP failure' do
-        put(:update, attr_for_update)
+        put(:update, params: attr_for_update)
         expect(response.status).to be >= 400
         expect(response.status).to be < 500
       end
@@ -259,10 +259,10 @@ RSpec.describe ContactsController, type: :controller do
 
     it 'calls destroy on the requested contact' do
       expect(contact).to receive(:destroy)
-      delete(:destroy, id: 'joe-schmoe')
+      delete(:destroy, params: { id: 'joe-schmoe' })
     end
     it 'sends back a JSON message' do
-      delete(:destroy, id: 'joe-schmoe')
+      delete(:destroy, params: { id: 'joe-schmoe' })
       expect(response.content_type).to eq('application/json')
     end
   end
