@@ -15,7 +15,7 @@ RSpec.describe NotesController, type: :controller do
       get(:index, params: { sort: true })
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     it 'assigns all notes as @notes' do
@@ -28,7 +28,7 @@ RSpec.describe NotesController, type: :controller do
 
   describe 'GET #show' do
     shared_examples_for '#show via host resource' do
-      xit 'returns a 200' do
+      it 'returns a 200' do
         expect(response).to have_http_status(200)
       end
       it 'assigns the requested note as @note' do
@@ -73,7 +73,7 @@ RSpec.describe NotesController, type: :controller do
       it '@notable is an instance of the host resource' do
         expect(assigns(:notable)).to eq host
       end
-      xit 'returns a 200' do
+      it 'returns a 200' do
         expect(response.code).to eq '200'
       end
       it 'assigns a new note as @note' do
@@ -127,7 +127,7 @@ RSpec.describe NotesController, type: :controller do
       it 'provides a value for @notable' do
         expect(assigns(:notable)).not_to be_nil
       end
-      xit 'returns a 200' do
+      it 'returns a 200' do
         expect(response).to have_http_status(200)
       end
       xit 'renders edit' do
@@ -162,7 +162,6 @@ RSpec.describe NotesController, type: :controller do
 
       describe 'expected method calls' do
         it 'calls #build_note' do
-          allow(controller).to receive(:respond_to)
           allow(controller).to receive(:render)
           expect(controller).to receive(:build_note)
           post(:create, params: post_attr)
@@ -178,8 +177,8 @@ RSpec.describe NotesController, type: :controller do
         it 'sets @note to a new Note object' do
           expect(assigns(:note)).to be_a_new(Note)
         end
-        it 'redirects to @notable' do
-          expect(response).to redirect_to(notable)
+        it 'renders the "show" template' do
+          expect(response).to render_template('show')
         end
       end
 
@@ -192,8 +191,8 @@ RSpec.describe NotesController, type: :controller do
         it 'assigns a newly created but unsaved note as @note' do
           expect(assigns(:note)).to be_a_new(Note)
         end
-        xit 're-renders the "new" template' do
-          expect(response).to render_template('new')
+        it 'responds with unprocessable_entity' do
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
     end
@@ -252,9 +251,9 @@ RSpec.describe NotesController, type: :controller do
           expect(note).to receive(:update)
           put(:update, params: update_attr)
         end
-        it 'redirects to notable' do
+        it 'renders the "show" template' do
           put(:update, params: update_attr)
-          expect(response).to redirect_to(notable)
+          expect(response).to render_template('show')
         end
       end
 
@@ -267,8 +266,8 @@ RSpec.describe NotesController, type: :controller do
         it 'assigns the note as @note' do
           expect(assigns(:note)).to eq(note)
         end
-        xit 're-renders the "edit" template' do
-          expect(response).to render_template('edit')
+        it 'responds with unprocessable_entity' do
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
     end
@@ -312,9 +311,9 @@ RSpec.describe NotesController, type: :controller do
         expect(note).to receive(:destroy)
         delete(:destroy, params: delete_opts)
       end
-      it 'redirects to the notes list' do
+      it 'returns JSON' do
         delete(:destroy, params: delete_opts)
-        expect(response).to redirect_to(notable)
+        expect(response.content_type).to eq('application/json')
       end
     end
 
@@ -326,6 +325,10 @@ RSpec.describe NotesController, type: :controller do
     end
 
     context 'Nested inside of job_applications/' do
+      before(:each) do
+        allow(job_application).to receive(:title).and_return(true)
+      end
+
       it_behaves_like '#destroy via host resource' do
         let(:notable) { job_application }
         let(:delete_opts) { { id: 1, job_application_id: 1 } }

@@ -8,9 +8,9 @@ describe JobApplications::CoverLettersController, type: :controller do
   before(:each) { log_in_as(user) }
 
   # TODO: Fix the stubbing/mocking in this test
-  xdescribe 'GET #index' do
+  describe 'GET #index' do
     let(:relation) do
-      ActiveRecord::Relation.new(JobApplications::CoverLetter, 'cover_letters')
+      ActiveRecord::Relation.new(JobApplications::CoverLetter, 'cover_letters', {})
     end
 
     before(:each) do
@@ -34,7 +34,7 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'assigns all cover_letters as @cover_letters' do
         expect(assigns(:cover_letters)).not_to be_nil
       end
-      it 'renders index' do
+      xit 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -62,7 +62,7 @@ describe JobApplications::CoverLettersController, type: :controller do
       get(:show, params: { job_application_id: 1 })
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     it 'assigns the requested cover_letter as @cover_letter' do
@@ -92,7 +92,7 @@ describe JobApplications::CoverLettersController, type: :controller do
       get(:edit, params: { job_application_id: 1})
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     it 'assigns the requested company as @cover_letter' do
@@ -123,7 +123,6 @@ describe JobApplications::CoverLettersController, type: :controller do
 
     context 'expected method calls' do
       before(:each) do
-        allow(controller).to receive(:respond_to).and_return(true)
         allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::CoverLetter).to receive(:new).and_return(cover_letter)
       end
@@ -143,7 +142,6 @@ describe JobApplications::CoverLettersController, type: :controller do
       before(:each) do
         allow(cover_letter).to receive(:job_application).and_return(job_application)
         allow(cover_letter).to receive(:save).and_return(true)
-        allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::CoverLetter).to receive(:new).and_return(cover_letter)
         post(:create, params: attr_for_create)
       end
@@ -151,8 +149,11 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'sets @cover_letter to a new JobApplications::CoverLetter object' do
         expect(assigns(:cover_letter)).to be_a_new(JobApplications::CoverLetter)
       end
-      it 'redirects to the created cover_letter' do
-        expect(response).to redirect_to(cover_letter.job_application)
+      it 'renders JSON' do
+        expect(response.content_type).to eq('application/json')
+      end
+      it 'returns a 201' do
+        expect(response).to have_http_status(:created)
       end
     end
 
@@ -166,9 +167,8 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'assigns a newly created but unsaved cover_letter as @cover_letter' do
         expect(assigns(:cover_letter)).to be_a_new(JobApplications::CoverLetter)
       end
-
-      xit 're-renders the "new" template' do
-        expect(response).to render_template('new')
+      it 'returns a 409 status code' do
+        expect(response).to have_http_status(409)
       end
     end
   end
@@ -190,7 +190,6 @@ describe JobApplications::CoverLettersController, type: :controller do
         allow(cover_letter).to receive(:update).and_return(true)
         allow(cover_letter).to receive(:job_application).and_return(job_application)
         allow(cover_letter).to receive(:update).and_return(true)
-        allow(controller).to receive(:render).and_return(true)
       end
 
       it 'assigns the requested cover_letter as @cover_letter' do
@@ -201,9 +200,9 @@ describe JobApplications::CoverLettersController, type: :controller do
         expect(cover_letter).to receive(:update)
         put(:update, params: attr_for_update)
       end
-      it 'redirects to the cover_letter' do
+      it 'returns a 200' do
         put(:update, params: attr_for_update)
-        expect(response).to redirect_to(cover_letter.job_application)
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -216,14 +215,15 @@ describe JobApplications::CoverLettersController, type: :controller do
       it 'assigns the cover_letter as @cover_letter' do
         expect(assigns(:cover_letter)).to eq(cover_letter)
       end
-      xit 're-renders the "edit" template' do
-        expect(response).to render_template('edit')
+      it 'returns a 409 status code' do
+        expect(response).to have_http_status(409)
       end
     end
   end
 
   describe 'DELETE #destroy' do
     before(:each) do
+      allow(job_application).to receive(:title).and_return(true)
       allow(cover_letter).to receive(:job_application).and_return(job_application)
       allow(cover_letter).to receive(:destroy).and_return(true)
       stub_before_actions
@@ -234,9 +234,9 @@ describe JobApplications::CoverLettersController, type: :controller do
       delete(:destroy, params: { job_application_id: 1 })
     end
 
-    it 'redirects to the cover_letters list' do
+    it 'responds with JSON' do
       delete(:destroy, params: { job_application_id: 1 })
-      expect(response).to redirect_to(cover_letter.job_application)
+      expect(response.content_type).to eq('application/json')
     end
   end
 

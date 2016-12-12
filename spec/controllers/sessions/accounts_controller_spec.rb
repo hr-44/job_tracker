@@ -11,10 +11,10 @@ describe Sessions::AccountsController, type: :controller do
       get(:new)
       expect(response).to redirect_to(user_path)
     end
-    xit 'renders "new" if not logged in' do
+    it 'tells client to redirect' do
       allow(@controller).to receive(:logged_in?).and_return(false)
       get(:new)
-      expect(response).to render_template 'new'
+      expect(response).to have_http_status(:redirect)
     end
   end
 
@@ -46,9 +46,9 @@ describe Sessions::AccountsController, type: :controller do
         allow(@controller).to receive(:authenticated?).and_return(false)
       end
 
-      xit 'renders "new"' do
+      it 'returns a 401' do
         post(:create)
-        expect(response).to render_template 'new'
+        expect(response).to have_http_status(:unauthorized)
       end
       it 'does not call #login_authenticated_user' do
         expect(@controller).not_to receive(:login_authenticated_user)
@@ -58,9 +58,33 @@ describe Sessions::AccountsController, type: :controller do
   end
 
   describe '#set_user' do
+    good_params = {
+      session: {
+        email: 'foobar@example.com',
+        password: 'password'
+      }
+    }
+
+    context 'param checking' do
+      it 'raises an error' do
+        params = {
+          email: 'foobar@example.com',
+          password: 'password'
+        }
+        allow(@controller).to receive(:params).and_return(params)
+        expect { @controller.send(:set_user) }
+          .to raise_error(ActionController::ParameterMissing)
+      end
+      it 'does not raise an error' do
+        allow(@controller).to receive(:params).and_return(good_params)
+        expect { @controller.send(:set_user) }.not_to raise_error
+      end
+    end
+
     context 'if email_and_password? is true' do
       before(:each) do
         allow(@controller).to receive(:email_and_password?).and_return(true)
+        allow(@controller).to receive(:params).and_return(good_params)
         allow(@controller).to receive(:find_user_by_email).and_return(user)
       end
 
@@ -77,6 +101,7 @@ describe Sessions::AccountsController, type: :controller do
 
     context 'if email_and_password? is false' do
       before(:each) do
+        allow(@controller).to receive(:params).and_return(good_params)
         allow(@controller).to receive(:email_and_password?).and_return(false)
       end
 
@@ -206,10 +231,6 @@ describe Sessions::AccountsController, type: :controller do
 
       it 'calls log_in with user' do
         expect(@controller).to receive(:log_in).with(user)
-        @controller.send(:login_authenticated_user)
-      end
-      it 'calls #redirect_back_or with user' do
-        expect(@controller).to receive(:redirect_back_or).with(root_url)
         @controller.send(:login_authenticated_user)
       end
     end

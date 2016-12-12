@@ -12,9 +12,10 @@ describe Sessions::BaseController, type: :controller do
         delete(:destroy)
       end
     end
-    it 'redirects to root_url' do
+
+    it 'responds with JSON' do
       delete(:destroy)
-      expect(response).to redirect_to root_url
+      expect(response.content_type).to eq 'application/json'
     end
   end
 end

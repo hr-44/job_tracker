@@ -7,10 +7,9 @@ describe JobApplications::PostingsController, type: :controller do
 
   before(:each) { log_in_as(user) }
 
-  # TODO: Fix the stubbing/mocking in this test
-  xdescribe 'GET #index' do
+  describe 'GET #index' do
     let(:relation) do
-      ActiveRecord::Relation.new(JobApplications::Posting, 'postings')
+      ActiveRecord::Relation.new(JobApplications::Posting, 'postings', {})
     end
 
     before(:each) do
@@ -34,7 +33,7 @@ describe JobApplications::PostingsController, type: :controller do
       it 'assigns all postings as @postings' do
         expect(assigns(:postings)).not_to be_nil
       end
-      it 'renders index' do
+      xit 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -62,7 +61,7 @@ describe JobApplications::PostingsController, type: :controller do
       get(:show, params: { job_application_id: 1 })
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     it 'assigns the requested posting as @posting' do
@@ -73,12 +72,12 @@ describe JobApplications::PostingsController, type: :controller do
     end
   end
 
-  xdescribe 'GET #new' do
+  describe 'GET #new' do
     before(:each) do
       get(:new, params: { job_application_id: 1 })
     end
 
-    it 'returns a 200' do
+    xit 'returns a 200' do
       expect(response.code).to eq '200'
     end
     it 'assigns a new posting as @posting' do
@@ -92,7 +91,7 @@ describe JobApplications::PostingsController, type: :controller do
       get(:edit, params: { job_application_id: 1 })
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     it 'assigns the requested company as @posting' do
@@ -123,8 +122,6 @@ describe JobApplications::PostingsController, type: :controller do
 
     context 'expected method calls' do
       before(:each) do
-        allow(controller).to receive(:respond_to).and_return(true)
-        allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::Posting).to receive(:new).and_return(posting)
       end
       after(:each) do
@@ -143,7 +140,6 @@ describe JobApplications::PostingsController, type: :controller do
       before(:each) do
         allow(posting).to receive(:job_application).and_return(job_application)
         allow(posting).to receive(:save).and_return(true)
-        allow(controller).to receive(:render).and_return(true)
         allow(JobApplications::Posting).to receive(:new).and_return(posting)
         post(:create, params: attr_for_create)
       end
@@ -151,8 +147,11 @@ describe JobApplications::PostingsController, type: :controller do
       it 'sets @posting to a new JobApplications::Posting object' do
         expect(assigns(:posting)).to be_a_new(JobApplications::Posting)
       end
-      it 'redirects to the created posting' do
-        expect(response).to redirect_to(posting.job_application)
+      it 'renders JSON' do
+        expect(response.content_type).to eq('application/json')
+      end
+      it 'returns a 201' do
+        expect(response).to have_http_status(:created)
       end
     end
 
@@ -166,8 +165,8 @@ describe JobApplications::PostingsController, type: :controller do
       it 'assigns a newly created but unsaved posting as @posting' do
         expect(assigns(:posting)).to be_a_new(JobApplications::Posting)
       end
-      xit 're-renders the "new" template' do
-        expect(response).to render_template('new')
+      it 'returns a 409 status code' do
+        expect(response).to have_http_status(409)
       end
     end
   end
@@ -188,7 +187,6 @@ describe JobApplications::PostingsController, type: :controller do
       before(:each) do
         allow(posting).to receive(:job_application).and_return(job_application)
         allow(posting).to receive(:update).and_return(true)
-        allow(controller).to receive(:render).and_return(true)
       end
 
       it 'assigns the requested posting as @posting' do
@@ -199,9 +197,9 @@ describe JobApplications::PostingsController, type: :controller do
         expect(posting).to receive(:update)
         put(:update, params: attr_for_update)
       end
-      it 'redirects to the posting' do
+      it 'returns a 200' do
         put(:update, params: attr_for_update)
-        expect(response).to redirect_to(posting.job_application)
+        expect(response).to have_http_status(:success)
       end
     end
 
@@ -214,8 +212,8 @@ describe JobApplications::PostingsController, type: :controller do
       it 'assigns the posting as @posting' do
         expect(assigns(:posting)).to eq(posting)
       end
-      xit 're-renders the "edit" template' do
-        expect(response).to render_template('edit')
+      it 'returns a 409 status code' do
+        expect(response).to have_http_status(409)
       end
     end
   end
@@ -232,9 +230,9 @@ describe JobApplications::PostingsController, type: :controller do
       delete(:destroy, params: { job_application_id: 1 })
     end
 
-    it 'redirects to the postings list' do
+    it 'responds with JSON' do
       delete(:destroy, params: { job_application_id: 1 })
-      expect(response).to redirect_to(posting.job_application)
+      expect(response.content_type).to eq('application/json')
     end
   end
 

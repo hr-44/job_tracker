@@ -9,10 +9,9 @@ RSpec.describe JobApplicationsController, type: :controller do
 
   before(:each) { log_in_as(user) }
 
-  # TODO: Fix the stubbing/mocking in this test
-  xdescribe 'GET #index' do
+  describe 'GET #index' do
     let(:relation) do
-      ActiveRecord::Relation.new(JobApplication, 'job_applications')
+      ActiveRecord::Relation.new(JobApplication, 'job_applications', {})
     end
 
     before(:each) do
@@ -37,7 +36,7 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'assigns all job_applications as @job_application' do
         expect(assigns(:job_applications)).not_to be_nil
       end
-      it 'renders index' do
+      xit 'renders index' do
         expect(response).to render_template(:index)
       end
     end
@@ -68,7 +67,7 @@ RSpec.describe JobApplicationsController, type: :controller do
       get(:show, params: { id: 1 })
     end
 
-    xit 'returns a 200' do
+    it 'returns a 200' do
       expect(response).to have_http_status(200)
     end
     xit 'renders show' do
@@ -165,8 +164,8 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'sets @job_application to a new JobApplication object' do
         expect(assigns(:job_application)).to be_a_new(JobApplication)
       end
-      it 'redirects to the created job_application' do
-        expect(response).to redirect_to(job_application)
+      it 'renders the "show" template' do
+        expect(response).to render_template('show')
       end
     end
 
@@ -179,9 +178,8 @@ RSpec.describe JobApplicationsController, type: :controller do
       it 'assigns a newly created but unsaved job_application as @job_application' do
         expect(assigns(:job_application)).to be_a_new(JobApplication)
       end
-
-      xit 're-renders the "new" template' do
-        expect(response).to render_template('new')
+      it 'responds with unprocessable_entity' do
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
@@ -220,9 +218,9 @@ RSpec.describe JobApplicationsController, type: :controller do
         put(:update, params: attr_for_update)
         expect(assigns(:job_application)).to eq(job_application)
       end
-      it 'redirects to the job_application' do
+      it 'renders the "show" template' do
         put(:update, params: attr_for_update)
-        expect(response).to redirect_to(job_application)
+        expect(response).to render_template('show')
       end
     end
 
@@ -240,15 +238,16 @@ RSpec.describe JobApplicationsController, type: :controller do
         put(:update, params: attr_for_update)
         expect(assigns(:job_application)).to eq(job_application)
       end
-      xit 're-renders the "edit" template' do
+      it 'responds with unprocessable_entity' do
         put(:update, params: attr_for_update)
-        expect(response).to render_template('edit')
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
 
   describe 'DELETE #destroy' do
     before(:each) do
+      allow(job_application).to receive(:title).and_return(true)
       allow(job_application).to receive(:destroy).and_return(true)
       stub_before_actions
     end
@@ -257,10 +256,9 @@ RSpec.describe JobApplicationsController, type: :controller do
       expect(job_application).to receive(:destroy)
       delete(:destroy, params: { id: 1 })
     end
-
-    it 'redirects to the job_applications list' do
+    it 'returns JSON' do
       delete(:destroy, params: { id: 1 })
-      expect(response).to redirect_to(job_applications_url)
+      expect(response.content_type).to eq('application/json')
     end
   end
 
