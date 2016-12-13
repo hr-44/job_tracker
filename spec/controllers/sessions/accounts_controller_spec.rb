@@ -19,8 +19,8 @@ describe Sessions::AccountsController, type: :controller do
         get(:new)
       end
 
-      it 'tells client to redirect' do
-        expect(response).to have_http_status(:redirect)
+      it 'responds with 401' do
+        expect(response).to have_http_status(:unauthorized)
       end
       it 'sets a value for @message' do
         expect(assigns(:message)).not_to be_nil
@@ -109,16 +109,17 @@ describe Sessions::AccountsController, type: :controller do
 
     context 'param checking' do
       it 'raises an error' do
-        params = {
+        bad_params = {
           email: 'foobar@example.com',
           password: 'password'
         }
-        allow(@controller).to receive(:params).and_return(params)
+        allow(@controller).to receive(:params).and_return(bad_params)
         expect { @controller.send(:set_user) }
           .to raise_error(ActionController::ParameterMissing)
       end
       it 'does not raise an error' do
         allow(@controller).to receive(:params).and_return(good_params)
+        allow(@controller).to receive(:email_and_password?).and_return(false)
         expect { @controller.send(:set_user) }.not_to raise_error
       end
     end

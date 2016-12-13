@@ -7,8 +7,20 @@ module Sessions
     def new
       return redirect_to(user_path) if logged_in?
 
-      @message = 'Client not logged in. Go to login page.'
-      render('login', status: 302)
+      example_key = 'request_body_example'
+
+      @message = {
+        problem: 'Client is not authorized.',
+        solution: "Login. Send a POST to '#{login_path}'. Wrap the request body params as per the example at the key, '#{example_key}'. Successful attempts receive a free cookie.",
+        example_key => {
+          session: {
+            email: '<user_email@example.com>',
+            password: '<user_password>'
+          }
+        }
+      }
+
+      render('login', status: 401)
     end
 
     def create
@@ -78,7 +90,7 @@ module Sessions
       if session[:forwarding_url]
         redirect_back_or(root_url)
       else
-        @message = 'You have logged in'
+        @message = 'You have logged in. Have a cookie.'
         render('login')
       end
     end
