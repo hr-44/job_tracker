@@ -32,4 +32,7 @@ Rails.application.routes.draw do
   resources :contacts do
     resources :notes, except: :index
   end
+
+  get '/contacts/:contact_id/notes',                 to: 'notes#index'
+  get '/job_applications/:job_application_id/notes', to: 'notes#index'
 end

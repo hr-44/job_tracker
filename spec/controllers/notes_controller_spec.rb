@@ -9,20 +9,67 @@ RSpec.describe NotesController, type: :controller do
   before(:each) { log_in_as(user) }
 
   describe 'GET #index' do
-    before(:each) do
-      allow(Note).to receive(:sorted).and_return(note)
-      allow(@controller).to receive(:custom_index_sort).and_return([note])
-      get(:index, params: { sort: true })
+    shared_examples_for 'common functional tests for #index' do
+      it 'returns a 200' do
+        expect(response).to have_http_status(200)
+      end
+      it 'renders index' do
+        expect(response).to render_template(:index)
+      end
     end
 
-    it 'returns a 200' do
-      expect(response).to have_http_status(200)
+    context 'all notes' do
+      it_behaves_like 'common functional tests for #index' do
+        before(:each) do
+          allow(Note).to receive(:sorted).and_return(note)
+          allow(@controller).to receive(:custom_index_sort).and_return([note])
+          get(:index, params: { sort: true })
+        end
+
+        it 'assigns all notes as @notes' do
+          expect(assigns(:notes)).to eq([note])
+        end
+      end
     end
-    it 'assigns all notes as @notes' do
-      expect(assigns(:notes)).to eq([note])
+
+    context 'all notes related to a contact' do
+      it_behaves_like 'common functional tests for #index' do
+        before(:each) do
+          allow(Note).to receive(:belonging_to_user_and_contact)
+          allow(Note).to receive(:sorted).and_return(note)
+          allow(@controller).to receive(:custom_index_sort).and_return([note])
+          get(:index, params: { sort: true, contact_id: 1 })
+        end
+
+        it 'assigns a value to @notes' do
+          expect(assigns(:notes)).not_to be_nil
+        end
+
+        it 'calls some filtering method' do
+          expect(Note).to receive(:belonging_to_user_and_contact)
+          get(:index, params: { sort: true, contact_id: 1 })
+        end
+      end
     end
-    it 'renders index' do
-      expect(response).to render_template(:index)
+
+    context 'all notes related to a job application' do
+      it_behaves_like 'common functional tests for #index' do
+        before(:each) do
+          allow(Note).to receive(:belonging_to_user_and_job_application)
+          allow(Note).to receive(:sorted).and_return(note)
+          allow(@controller).to receive(:custom_index_sort).and_return([note])
+          get(:index, params: { sort: true, job_application_id: 1 })
+        end
+
+        it 'assigns a value to @notes' do
+          expect(assigns(:notes)).not_to be_nil
+        end
+
+        it 'calls some filtering method' do
+          expect(Note).to receive(:belonging_to_user_and_job_application)
+          get(:index, params: { sort: true, job_application_id: 1 })
+        end
+      end
     end
   end
 

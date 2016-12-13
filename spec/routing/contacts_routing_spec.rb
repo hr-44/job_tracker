@@ -28,6 +28,11 @@ RSpec.describe ContactsController, type: :routing do
 
     context 'nested resources' do
       describe NotesController do
+        it 'routes to notes#index' do
+          expected = { controller: 'notes', action: 'index',
+                       contact_id: '1' }
+          expect(get: '/contacts/1/notes').to route_to(expected)
+        end
         it 'routes to notes#show' do
           expected = { controller: 'notes', action: 'show',
                        contact_id: '1', id: '1' }

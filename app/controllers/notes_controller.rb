@@ -15,7 +15,7 @@ class NotesController < ApplicationController
   # GET /notes
   # GET /notes.json
   def index
-    @notes = collection_belonging_to_user
+    @notes = collection_based_on_path(request.path_parameters)
     @notes = custom_index_sort if params[:sort]
     render(:index)
   end
@@ -119,5 +119,25 @@ class NotesController < ApplicationController
 
   def default_sorting_column
     'updated_at'
+  end
+
+  def collection_based_on_path(path_params)
+    if path_params[:contact_id].present?
+      args = {
+        user_id: current_user.id,
+        contact_id: path_params[:contact_id]
+      }
+
+      Note.belonging_to_user_and_contact(args)
+    elsif path_params[:job_application_id].present?
+      args = {
+        user_id: current_user.id,
+        job_application_id: path_params[:job_application_id]
+      }
+
+      Note.belonging_to_user_and_job_application(args)
+    else
+      collection_belonging_to_user
+    end
   end
 end
