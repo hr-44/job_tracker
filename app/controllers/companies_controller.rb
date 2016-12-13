@@ -7,7 +7,7 @@ class CompaniesController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   before_action :logged_in_user
-  before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_company, only: [:show, :update]
 
   # GET /companies
   # GET /companies.json
@@ -40,16 +40,6 @@ class CompaniesController < ApplicationController
     render(json: json)
   end
 
-  # GET /companies/new
-  def new
-    @company = Company.new
-  end
-
-  def edit
-  end
-
-  # POST /companies
-  # POST /companies.json
   def create
     @company = Company.new(company_params)
     save_and_respond(company)

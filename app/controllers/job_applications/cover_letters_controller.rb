@@ -9,8 +9,8 @@ module JobApplications
     helper_method :sort_column, :sort_direction
 
     before_action :logged_in_user
-    before_action :set_cover_letter, only: [:show, :edit, :update, :destroy]
-    before_action :check_user,       only: [:show, :edit, :update, :destroy]
+    before_action :set_cover_letter, only: [:show, :update, :destroy]
+    before_action :check_user,       only: [:show, :update, :destroy]
 
     # GET /cover_letters
     # GET /cover_letters.json
@@ -35,22 +35,6 @@ module JobApplications
         cover_letter: cover_letter
       }
       render(json: json)
-    end
-
-    # GET /cover_letters/new
-    def new
-      job_application_id = params[:job_application_id]
-
-      opts = {
-        job_application_id: job_application_id,
-        sent_date: Time.now.utc
-      }
-
-      @cover_letter = CoverLetter.new(opts)
-    end
-
-    # GET /cover_letters/1/edit
-    def edit
     end
 
     # POST /cover_letters

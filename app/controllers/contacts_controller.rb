@@ -8,8 +8,8 @@ class ContactsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   before_action :logged_in_user
-  before_action :set_contact,   only: [:show, :edit, :update, :destroy]
-  before_action :check_user,    only: [:show, :edit, :update, :destroy]
+  before_action :set_contact,   only: [:show, :update, :destroy]
+  before_action :check_user,    only: [:show, :update, :destroy]
 
   # GET /contacts
   # GET /contacts.json
@@ -38,17 +38,6 @@ class ContactsController < ApplicationController
       notes: @notes
     }
     render(json: json)
-  end
-
-  # GET /contacts/new
-  def new
-    company_id = params[:company_id]
-    opts = { company_id: company_id }
-    @contact = Contact.new(opts)
-  end
-
-  # GET /contacts/1/edit
-  def edit
   end
 
   # POST /contacts

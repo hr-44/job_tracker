@@ -5,10 +5,6 @@ class RecruitmentsController < ApplicationController
   before_action :load_company
   before_action :set_recruitment, only: :destroy
 
-  def new
-    @recruitment = Recruitment.new
-  end
-
   def create
     opts = build_recruitment_params
     @recruitment = Recruitment.new(opts)
@@ -18,7 +14,7 @@ class RecruitmentsController < ApplicationController
       # flash[:success] = 'Client, Agency relationship successfully added'
       redirect_to company
     else
-      render :new
+      # TODO: send client an error message
     end
   end
 

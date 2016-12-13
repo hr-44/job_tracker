@@ -9,8 +9,8 @@ module JobApplications
     helper_method :sort_column, :sort_direction
 
     before_action :logged_in_user
-    before_action :set_posting, only: [:show, :edit, :update, :destroy]
-    before_action :check_user,  only: [:show, :edit, :update, :destroy]
+    before_action :set_posting, only: [:show, :update, :destroy]
+    before_action :check_user,  only: [:show, :update, :destroy]
 
     # GET /postings
     # GET /postings.json
@@ -35,19 +35,6 @@ module JobApplications
         posting: posting
       }
       render(json: json)
-    end
-
-    # GET /postings/new
-    def new
-      opts = {
-        job_application_id: params[:job_application_id],
-        posting_date: Time.now.utc
-      }
-      @posting = Posting.new(opts)
-    end
-
-    # GET /postings/1/edit
-    def edit
     end
 
     # POST /postings

@@ -8,8 +8,8 @@ class JobApplicationsController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   before_action :logged_in_user
-  before_action :set_job_application, only: [:show, :edit, :update, :destroy]
-  before_action :check_user,          only: [:show, :edit, :update, :destroy]
+  before_action :set_job_application, only: [:show, :update, :destroy]
+  before_action :check_user,          only: [:show, :update, :destroy]
 
   # GET /job_applications
   # GET /job_applications.json
@@ -44,17 +44,6 @@ class JobApplicationsController < ApplicationController
     }
 
     render(json: json)
-  end
-
-  # GET /job_applications/new
-  def new
-    company_id = params[:company_id]
-    opts = { company_id: company_id }
-    @job_application = JobApplication.new(opts)
-  end
-
-  # GET /job_applications/1/edit
-  def edit
   end
 
   # POST /job_applications

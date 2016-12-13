@@ -1,19 +1,10 @@
 class UsersController < ApplicationController
-  before_action :logged_in_user, only: [:show, :edit, :update, :destroy]
-  before_action :set_user,       only: [:show, :edit, :update, :destroy]
-  before_action :check_user,     only: [:show, :edit, :update, :destroy]
+  before_action :logged_in_user, only: [:show, :update, :destroy]
+  before_action :set_user,       only: [:show, :update, :destroy]
+  before_action :check_user,     only: [:show, :update, :destroy]
 
   # GET /users/1
   def show
-  end
-
-  # GET /users/new
-  def new
-    @user = new_account
-  end
-
-  # GET /users/1/edit
-  def edit
   end
 
   # POST /users
@@ -26,7 +17,7 @@ class UsersController < ApplicationController
       # flash[:success] = 'Thanks for signing up.'
       redirect_to root_url
     else
-      render :new
+      # TODO: send client an error message
     end
   end
 
@@ -37,7 +28,7 @@ class UsersController < ApplicationController
       # flash[:success] = 'Profile was successfully updated.'
       redirect_to user_path
     else
-      render :edit
+      # TODO: send back an error message
     end
   end
 

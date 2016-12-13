@@ -9,8 +9,8 @@ class NotesController < ApplicationController
 
   before_action :logged_in_user
   before_action :load_notable,  except: :index
-  before_action :set_note,      only: [:show, :edit, :update, :destroy]
-  before_action :check_user,    only: [:show, :edit, :update, :destroy]
+  before_action :set_note,      only: [:show, :update, :destroy]
+  before_action :check_user,    only: [:show, :update, :destroy]
 
   # GET /notes
   # GET /notes.json
@@ -29,15 +29,6 @@ class NotesController < ApplicationController
 
   def show
     render(formats: :json)
-  end
-
-  # GET /notes/new
-  def new
-    @note = build_note
-  end
-
-  # GET /notes/1/edit
-  def edit
   end
 
   # POST /notes
