@@ -13,30 +13,6 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    it 'assigns a new user as @user' do
-      get(:new)
-      expect(assigns(:user)).to be_a_new(User)
-    end
-    xit 'renders the "new" template' do
-      get(:new)
-      expect(response).to render_template 'new'
-    end
-    it 'calls #new_account' do
-      allow(controller).to receive(:new_account)
-      expect(controller).to receive(:new_account).with(no_args)
-      controller.new
-    end
-  end
-
-  describe 'GET #edit' do
-    it 'assigns the requested user as @user' do
-      allow(User).to receive(:find).and_return(user)
-      get(:edit, params: { id: user.id })
-      expect(assigns(:user)).to eq(user)
-    end
-  end
-
   describe 'POST #create' do
     let(:attr_for_create) do
       {

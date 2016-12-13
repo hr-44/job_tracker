@@ -92,36 +92,6 @@ RSpec.describe JobApplicationsController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before(:each) do
-      get(:new, params: { company_id: 1 })
-    end
-
-    xit 'returns a 200' do
-      expect(response.code).to eq '200'
-    end
-    it 'assigns a new job_application as @job_application' do
-      expect(assigns(:job_application)).to be_a_new(JobApplication)
-    end
-  end
-
-  describe 'GET #edit' do
-    before(:each) do
-      stub_before_actions
-      get(:edit, params: { id: 1 })
-    end
-
-    xit 'returns a 200' do
-      expect(response).to have_http_status(200)
-    end
-    it 'assigns the requested company as @job_application' do
-      expect(assigns(:job_application)).to eq(job_application)
-    end
-    xit 'renders edit' do
-      expect(response).to render_template(:edit)
-    end
-  end
-
   describe 'POST #create' do
     let(:attr_for_create) do
       { job_application: { active: true } }

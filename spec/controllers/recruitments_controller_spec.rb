@@ -9,25 +9,6 @@ describe RecruitmentsController, type: :controller do
     log_in_as(user)
   end
 
-  describe 'GET #new' do
-    before(:each) do
-      allow(company).to receive(:id).and_return(1)
-      allow(Company).to receive(:find).and_return(company)
-      get(:new, params: { company_id: 1 })
-    end
-
-    xit 'renders the new template' do
-      expect(response).to render_template 'new'
-    end
-    xit 'returns a 200 status' do
-      expect(response).to have_http_status 200
-    end
-    it 'assigns a new Recruitment object to @recruitment' do
-      actual = assigns(:recruitment)
-      expect(actual).to be_a_new Recruitment
-    end
-  end
-
   describe 'POST #create' do
     let(:agency) { build(:company) }
     let(:client) { build(:company) }

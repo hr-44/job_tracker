@@ -72,36 +72,6 @@ describe JobApplications::PostingsController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before(:each) do
-      get(:new, params: { job_application_id: 1 })
-    end
-
-    xit 'returns a 200' do
-      expect(response.code).to eq '200'
-    end
-    it 'assigns a new posting as @posting' do
-      expect(assigns(:posting)).to be_a_new(JobApplications::Posting)
-    end
-  end
-
-  describe 'GET #edit' do
-    before(:each) do
-      stub_before_actions
-      get(:edit, params: { job_application_id: 1 })
-    end
-
-    it 'returns a 200' do
-      expect(response).to have_http_status(200)
-    end
-    it 'assigns the requested company as @posting' do
-      expect(assigns(:posting)).to eq(posting)
-    end
-    xit 'renders edit' do
-      expect(response).to render_template(:edit)
-    end
-  end
-
   describe 'POST #create' do
     let(:attr_for_create) do
       {

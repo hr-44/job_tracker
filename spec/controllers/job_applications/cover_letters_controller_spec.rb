@@ -73,36 +73,6 @@ describe JobApplications::CoverLettersController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before(:each) do
-      get(:new, params: { job_application_id: 1 })
-    end
-
-    xit 'returns a 200' do
-      expect(response.code).to eq '200'
-    end
-    it 'assigns a new cover_letter as @cover_letter' do
-      expect(assigns(:cover_letter)).to be_a_new(JobApplications::CoverLetter)
-    end
-  end
-
-  describe 'GET #edit' do
-    before(:each) do
-      stub_before_actions
-      get(:edit, params: { job_application_id: 1})
-    end
-
-    it 'returns a 200' do
-      expect(response).to have_http_status(200)
-    end
-    it 'assigns the requested company as @cover_letter' do
-      expect(assigns(:cover_letter)).to eq(cover_letter)
-    end
-    xit 'renders edit' do
-      expect(response).to render_template(:edit)
-    end
-  end
-
   describe 'POST #create' do
     let(:attr_for_create) do
       {

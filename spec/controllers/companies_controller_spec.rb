@@ -60,33 +60,6 @@ RSpec.describe CompaniesController, type: :controller do
     end
   end
 
-  describe 'GET #new' do
-    before(:each) { log_in_as(user) }
-
-    it 'assigns a new company as @company' do
-      get(:new)
-      expect(assigns(:company)).to be_a_new(Company)
-    end
-  end
-
-  describe 'GET #edit' do
-    before(:each) do
-      log_in_as(user)
-      allow(Company).to receive(:find).and_return(company)
-      get(:edit, params: { id: 'example-company' })
-    end
-
-    xit 'returns a 200' do
-      expect(response).to have_http_status(200)
-    end
-    it 'assigns the requested company as @company' do
-      expect(assigns(:company)).to eq(company)
-    end
-    xit 'renders edit' do
-      expect(response).to render_template(:edit)
-    end
-  end
-
   describe 'POST #create' do
     let(:attr_for_create) do
       { name: 'foo', website: 'www.example.com', category: 'bar' }
