@@ -6,16 +6,8 @@ RSpec.describe JobApplicationsController, type: :routing do
       expect(get: '/job_applications').to route_to('job_applications#index')
     end
 
-    it 'routes to #new' do
-      expect(get: '/job_applications/new').to route_to('job_applications#new')
-    end
-
     it 'routes to #show' do
       expect(get: '/job_applications/1').to route_to('job_applications#show', id: '1')
-    end
-
-    it 'routes to #edit' do
-      expect(get: '/job_applications/1/edit').to route_to('job_applications#edit', id: '1')
     end
 
     it 'routes to #create' do
@@ -36,20 +28,10 @@ RSpec.describe JobApplicationsController, type: :routing do
 
     context 'nested resources' do
       describe NotesController do
-        it 'routes to notes#new' do
-          expected = { controller: 'notes', action: 'new',
-                       job_application_id: '1' }
-          expect(get: '/job_applications/1/notes/new').to route_to(expected)
-        end
         it 'routes to notes#show' do
           expected = { controller: 'notes', action: 'show',
                        job_application_id: '1', id: '1' }
           expect(get: '/job_applications/1/notes/1').to route_to(expected)
-        end
-        it 'routes to notes#edit' do
-          expected = { controller: 'notes', action: 'edit',
-                       job_application_id: '1', id: '1' }
-          expect(get: '/job_applications/1/notes/1/edit').to route_to(expected)
         end
         it 'routes to notes#create' do
           expected = { controller: 'notes', action: 'create',

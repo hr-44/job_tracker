@@ -6,16 +6,8 @@ RSpec.describe CompaniesController, type: :routing do
       expect(get: '/companies').to route_to('companies#index')
     end
 
-    it 'routes to #new' do
-      expect(get: '/companies/new').to route_to('companies#new')
-    end
-
     it 'routes to #show' do
       expect(get: '/companies/1').to route_to('companies#show', id: '1')
-    end
-
-    it 'routes to #edit' do
-      expect(get: '/companies/1/edit').to route_to('companies#edit', id: '1')
     end
 
     it 'routes to #create' do

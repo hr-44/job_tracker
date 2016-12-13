@@ -6,16 +6,8 @@ RSpec.describe ContactsController, type: :routing do
       expect(get: '/contacts').to route_to('contacts#index')
     end
 
-    it 'routes to #new' do
-      expect(get: '/contacts/new').to route_to('contacts#new')
-    end
-
     it 'routes to #show' do
       expect(get: '/contacts/1').to route_to('contacts#show', id: '1')
-    end
-
-    it 'routes to #edit' do
-      expect(get: '/contacts/1/edit').to route_to('contacts#edit', id: '1')
     end
 
     it 'routes to #create' do
@@ -36,19 +28,10 @@ RSpec.describe ContactsController, type: :routing do
 
     context 'nested resources' do
       describe NotesController do
-        it 'routes to notes#new' do
-          expected = { controller: 'notes', action: 'new', contact_id: '1' }
-          expect(get: '/contacts/1/notes/new').to route_to(expected)
-        end
         it 'routes to notes#show' do
           expected = { controller: 'notes', action: 'show',
                        contact_id: '1', id: '1' }
           expect(get: '/contacts/1/notes/1').to route_to(expected)
-        end
-        it 'routes to notes#edit' do
-          expected = { controller: 'notes', action: 'edit',
-                       contact_id: '1', id: '1' }
-          expect(get: '/contacts/1/notes/1/edit').to route_to(expected)
         end
         it 'routes to notes#create' do
           expected = { controller: 'notes', action: 'create',
