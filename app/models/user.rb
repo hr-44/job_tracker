@@ -17,4 +17,13 @@ class User < ActiveRecord::Base
   validates :type, presence: true
 
   has_secure_password(validations: false)
+
+  class << self
+    def filter_user_info(user)
+      user_attributes = user.attributes
+      forbidden_columns = ['remember_digest', 'password_digest', 'type']
+      forbidden_columns.each { |k| user_attributes.delete(k) }
+      user_attributes
+    end
+  end
 end
