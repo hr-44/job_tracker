@@ -1,8 +1,0 @@
-<div class='field'>
-  <% opts = options_for_select(
-    [['Yes', true], ['No', false]],
-    selected: @job_application.active
-  ) %>
-  <%= f.label :active %><br>
-  <%= f.select(:active, opts, :include_blank => true) %>
-</div>

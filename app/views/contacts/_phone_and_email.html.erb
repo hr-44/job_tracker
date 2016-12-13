@@ -1,7 +1,0 @@
-<% if contact.phone_office? %>
-  <%= content_tag(:span, contact.phone_office) %><br />
-<% end %>
-<% if contact.phone_mobile? %>
-  <%= content_tag(:span, contact.phone_mobile) %><br />
-<% end %>
-<%= content_tag(:span, contact.email) if contact.email? %>
