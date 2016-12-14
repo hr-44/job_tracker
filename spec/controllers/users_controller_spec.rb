@@ -8,13 +8,14 @@ RSpec.describe UsersController, type: :controller do
   describe 'GET #show' do
     before(:each) do
       allow(User).to receive(:find).and_return(user)
+      allow(User).to receive(:filter_user_info).and_return(true)
       get(:show)
     end
 
     it 'assigns user as @user' do
       expect(assigns(:user)).to eq(user)
     end
-    it 'provides limited user information' do
+    it 'sets a value for @filtered_user_info' do
       expect(assigns(:filtered_user_info)).not_to be_nil
     end
     it 'renders show' do
@@ -51,21 +52,44 @@ RSpec.describe UsersController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(user).to receive(:save).and_return(true)
+        allow(User).to receive(:filter_user_info).and_return(true)
       end
 
       it_behaves_like 'calls these methods every time'
 
-      it 'sets @user to a new User' do
-        post(:create, params: { users_account: attr_for_create })
-        expect(assigns(:user)).to be_a(User)
+      context 'functional tests' do
+        before(:each) do
+          post(:create, params: { users_account: attr_for_create })
+        end
+
+        it 'sets @user to a new User' do
+          expect(assigns(:user)).to be_a(User)
+        end
+        it 'sets a value for @filtered_user_info' do
+          expect(assigns(:filtered_user_info)).not_to be_nil
+        end
+        it 'sets a value for @message' do
+          expect(assigns(:message)).not_to be_nil
+        end
+        it 'renders success' do
+          expect(response).to render_template('success')
+        end
+        it 'returns a 201' do
+          expect(response).to have_http_status(:created)
+        end
       end
-      it 'calls log_in' do
-        expect(controller).to receive(:log_in)
-        post(:create, params: { users_account: attr_for_create })
-      end
-      it 'redirects to the created user' do
-        post(:create, params: { users_account: attr_for_create })
-        expect(response).to redirect_to(root_path)
+
+      context 'expected method calls' do
+        after(:each) do
+          post(:create, params: { users_account: attr_for_create })
+        end
+
+        it 'calls filtered_user_info' do
+          expect(controller).to receive(:filter_user_info)
+        end
+        it 'calls log_in' do
+          expect(controller).to receive(:log_in)
+        end
       end
     end
 
@@ -77,6 +101,9 @@ RSpec.describe UsersController, type: :controller do
 
       it_behaves_like 'calls these methods every time'
 
+      it 'sets a value for @errors' do
+        expect(assigns(:errors)).not_to be_nil
+      end
       it 'responds with unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -95,21 +122,42 @@ RSpec.describe UsersController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(user).to receive(:update).and_return(true)
+        allow(User).to receive(:filter_user_info).and_return(true)
       end
 
-      it 'updates the requested user' do
-        expect(user).to receive(:update)
-        put(:update, params: attr_for_update)
+      context 'functional tests' do
+        before(:each) do
+          put(:update, params: attr_for_update)
+        end
+
+        it 'assigns the requested user as @user' do
+          expect(assigns(:user)).to eq(user)
+        end
+        it 'sets a value for @filtered_user_info' do
+          expect(assigns(:filtered_user_info)).not_to be_nil
+        end
+        it 'sets a value for @message' do
+          expect(assigns(:message)).not_to be_nil
+        end
+        it 'renders success' do
+          expect(response).to render_template('success')
+        end
+        it 'returns a 200' do
+          expect(response).to have_http_status(:ok)
+        end
       end
 
-      it 'assigns the requested user as @user' do
-        put(:update, params: attr_for_update)
-        expect(assigns(:user)).to eq(user)
-      end
+      context 'expected method calls' do
+        after(:each) do
+          put(:update, params: attr_for_update)
+        end
 
-      it 'redirects to the user' do
-        put(:update, params: attr_for_update)
-        expect(response).to redirect_to(user_url)
+        it 'calls filtered_user_info' do
+          expect(controller).to receive(:filter_user_info)
+        end
+        it 'updates the requested user' do
+          expect(user).to receive(:update)
+        end
       end
     end
 
@@ -122,7 +170,9 @@ RSpec.describe UsersController, type: :controller do
       it 'assigns the user as @user' do
         expect(assigns(:user)).to eq(user)
       end
-
+      it 'sets a value for @errors' do
+        expect(assigns(:errors)).not_to be_nil
+      end
       it 'responds with unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -139,9 +189,13 @@ RSpec.describe UsersController, type: :controller do
       expect(user).to receive(:destroy)
       delete(:destroy, params: { id: 'foo' })
     end
-    it 'redirects to the users list' do
+    it 'sets a value for @message' do
       delete(:destroy, params: { id: 'foo' })
-      expect(response).to redirect_to(user_url)
+      expect(assigns(:message)).not_to be_nil
+    end
+    it 'renders "shared/destroy"' do
+      delete(:destroy, params: { id: 'foo' })
+      expect(response).to render_template('shared/destroy')
     end
   end
 
@@ -208,6 +262,24 @@ RSpec.describe UsersController, type: :controller do
         allow(controller).to receive(:redirect_to).and_return(true)
         expect(controller).to receive(:redirect_to).with(root_url)
       end
+    end
+  end
+
+  describe '#filter_user_info' do
+    before(:each) do
+      allow(controller).to receive(:user).and_return(user)
+      allow(User).to receive(:filter_user_info).and_return('filtered_user_info')
+    end
+
+    it 'calls User.filter_user_info with the current user' do
+      expect(User).to receive(:filter_user_info).with(controller.user)
+      controller.send(:filter_user_info)
+    end
+    it 'sets a value for @filtered_user_info' do
+      expect { controller.send(:filter_user_info) }
+        .to change {controller.filtered_user_info}
+        .from(nil)
+        .to('filtered_user_info')
     end
   end
 end

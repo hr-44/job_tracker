@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   include ScaffoldedActions
 
-  attr_reader :user
+  attr_reader :user, :filtered_user_info
 
   before_action :logged_in_user, only: [:show, :update, :destroy]
   before_action :set_user,       only: [:show, :update, :destroy]
@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    @filtered_user_info = User.filter_user_info(user)
+    filter_user_info
     render(:show)
   end
 
@@ -19,9 +19,9 @@ class UsersController < ApplicationController
 
     if user.save
       log_in user
-      # TODO: send this message as part of json response
-      # flash[:success] = 'Thanks for signing up.'
-      redirect_to root_url
+      filter_user_info
+      @message = { text: 'Thanks for signing up.' }
+      render(:success, status: :created)
     else
       @errors = user.errors
       render_errors
@@ -31,9 +31,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if user.update(user_params)
-      # TODO: send this message as part of json response
-      # flash[:success] = 'Profile was successfully updated.'
-      redirect_to user_path
+      filter_user_info
+      @message = 'Profile was successfully updated.'
+      render(:success)
     else
       @errors = user.errors
       render_errors
@@ -43,7 +43,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   def destroy
     user.destroy
-    redirect_to user_url, info: 'Profile was successfully destroyed.'
+    @message = 'Your user account, along with associated contacts, notes, job applications, cover letters & postings have been deleted. Thanks for using the app.'
+    render('shared/destroy')
   end
 
   private
@@ -67,5 +68,9 @@ class UsersController < ApplicationController
 
   def check_user
     redirect_to(root_url) unless current_user?(user)
+  end
+
+  def filter_user_info
+    @filtered_user_info = User.filter_user_info(user)
   end
 end
