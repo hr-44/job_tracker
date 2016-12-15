@@ -34,4 +34,5 @@ Rails.application.routes.draw do
 
   get '/contacts/:contact_id/notes',                 to: 'notes#index'
   get '/job_applications/:job_application_id/notes', to: 'notes#index'
+  post '/token', to: 'token#create'
 end
