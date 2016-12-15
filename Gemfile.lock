@@ -208,6 +208,7 @@ DEPENDENCIES
   friendly_id (~> 5.1.0)
   hiredis (~> 0.6.1)
   jb (~> 0.4.1)
+  jwt (~> 1.5)
   omniauth-github (~> 1.1.2)
   omniauth-google-oauth2 (~> 0.4.1)
   omniauth-twitter (~> 1.2.1)
