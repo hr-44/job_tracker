@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ApplicationController, type: :controller do
+xdescribe ApplicationController, type: :controller do
   let(:user) { build(:user) }
 
   context 'AuthorizationHelper' do

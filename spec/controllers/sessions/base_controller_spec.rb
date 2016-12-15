@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Sessions::BaseController, type: :controller do
   describe 'DELETE #destroy' do
-    context 'if logged_in?' do
+    xcontext 'if logged_in?' do
       before(:each) do
         allow(@controller).to receive(:logged_in?).and_return(true)
       end
