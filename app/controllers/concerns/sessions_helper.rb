@@ -27,12 +27,14 @@ module SessionsHelper
     @current_user = nil
   end
 
+  # TODO: figure out if this feature is worth keeping & if it makes sense with auth tokens
   def remember(user)
     user.remember
     cookies.permanent.signed[:user_id] = user.id
     cookies.permanent[:remember_token] = user.remember_token
   end
 
+  # TODO: figure out if this feature is worth keeping & if it makes sense with auth tokens
   def forget(user)
     user.forget
     cookies.delete(:user_id)
@@ -46,6 +48,7 @@ module SessionsHelper
     !current_user.nil?
   end
 
+  # TODO: keep this feature?
   # redirects to stored location (or to a default location)
   def redirect_back_or(default)
     forwarding_url = session[:forwarding_url]
@@ -60,6 +63,7 @@ module SessionsHelper
 
   private
 
+  # TODO: keep parts of this feature? (`store_location`)
   # confirm a logged-in user
   def logged_in_user
     return if logged_in?

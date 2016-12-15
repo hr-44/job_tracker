@@ -72,6 +72,7 @@ module Sessions
     end
 
     def login_authenticated_user
+      # TODO: send user an auth token
       log_in(user)
 
       if remember_me?

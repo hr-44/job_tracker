@@ -6,6 +6,7 @@ module Sessions
 
     def create
       begin
+        # TODO: send user an auth token
         log_in(user)
       rescue
         redirect_to(action: 'failure')
