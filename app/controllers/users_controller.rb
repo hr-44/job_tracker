@@ -18,10 +18,9 @@ class UsersController < ApplicationController
     @user = new_account(user_params)
 
     if user.save
-      # TODO: send user an auth token instead of `log_in`
-      log_in user
       filter_user_info
       @message = { text: 'Thanks for signing up.' }
+      @auth_token = JsonWebToken.encode(user_id: user.id)
       render(:success, status: :created)
     else
       @errors = user.errors

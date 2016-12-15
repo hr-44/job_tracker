@@ -1,4 +1,5 @@
 {
   user: @filtered_user_info,
-  message: @message
+  message: @message,
+  auth_token: @auth_token
 }
