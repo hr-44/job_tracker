@@ -3,6 +3,44 @@ require 'rails_helper'
 describe ApplicationController, type: :controller do
   let(:user) { build(:user) }
 
+  describe '#authorize_request' do
+    controller do
+      def index; end
+    end
+
+    context 'authorized user' do
+      before(:each) do
+        allow(controller).to receive(:authorize_api_request).and_return(user)
+        get(:index)
+      end
+
+      it 'does not render auth/errors' do
+        expect(response).not_to render_template('auth/errors')
+      end
+      it 'sets value for @current_user' do
+        expect(assigns(:current_user)).to eq(user)
+      end
+    end
+
+    context 'unauthorized user' do
+      before(:each) do
+        allow(controller).to receive(:authorize_api_request).and_return(nil)
+        controller.instance_eval { @current_user = 'current user' }
+        get(:index)
+      end
+
+      it 'renders auth/errors' do
+        expect(response).to render_template('auth/errors')
+      end
+      it 'responds with a 401' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+      it 'sets @current_user to nil' do
+        expect(assigns(:current_user)).to be_nil
+      end
+    end
+  end
+
   describe 'AuthorizationHelper' do
     let(:good_headers) { { 'Authorization' => 'Basic deadbeef' } }
     let(:bad_headers)  { { 'foo' => 'bar' } }
