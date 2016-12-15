@@ -12,10 +12,10 @@ class ApplicationController < ActionController::API
   # include ActionController::RequestForgeryProtection
   # protect_from_forgery with: :null_session
 
-  include SessionsHelper
   include AuthorizationHelper
 
-  helper_method :current_user, :logged_in?
+  attr_reader :current_user
+
   before_action :authorize_request
 
   private
@@ -24,9 +24,14 @@ class ApplicationController < ActionController::API
     user = authorize_api_request(request.headers)
 
     if !user
+      @current_user = nil
       render('auth/errors', status: :unauthorized)
     else
       @current_user = user
     end
+  end
+
+  def current_user?(user)
+    user == current_user
   end
 end
