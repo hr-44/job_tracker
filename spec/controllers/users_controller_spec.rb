@@ -52,6 +52,7 @@ RSpec.describe UsersController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(user).to receive(:save).and_return(true)
+        allow(controller).to receive(:log_in).and_return(true)
         allow(User).to receive(:filter_user_info).and_return(true)
       end
 

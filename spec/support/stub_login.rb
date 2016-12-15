@@ -5,6 +5,8 @@ module StubLogin
   end
 
   def log_in_as(mocked_user, options = {})
+    allow(controller).to receive(:authorize_request).and_return(true)
+
     if request_test?
       log_in_for_request_spec(mocked_user, options)
     else

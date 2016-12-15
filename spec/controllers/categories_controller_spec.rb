@@ -8,7 +8,7 @@ describe CategoriesController, type: :controller do
     let(:companies) { %I(foo bar) }
 
     before(:each) do
-      log_in_as(user)
+      allow(controller).to receive(:authorize_request).and_return(true)
       allow(controller).to receive(:set_category)
       allow(category).to receive(:companies).and_return(companies)
       allow(controller).to receive(:category).and_return(category)
