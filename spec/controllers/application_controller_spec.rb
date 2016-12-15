@@ -41,6 +41,19 @@ describe ApplicationController, type: :controller do
     end
   end
 
+  describe '#current_user?' do
+    it 'returns true if passed in user is same as current_user' do
+      allow(controller).to receive(:current_user).and_return('foo')
+      actual = controller.send(:current_user?, 'foo')
+      expect(actual).to be_truthy
+    end
+    it 'otherwise returns false' do
+      allow(controller).to receive(:current_user).and_return('bar')
+      actual = controller.send(:current_user?, 'foo')
+      expect(actual).to be_falsey
+    end
+  end
+
   describe 'AuthorizationHelper' do
     let(:good_headers) { { 'Authorization' => 'Basic deadbeef' } }
     let(:bad_headers)  { { 'foo' => 'bar' } }
@@ -328,19 +341,6 @@ describe ApplicationController, type: :controller do
             @controller.current_user
           end
         end
-      end
-    end
-
-    describe '#current_user?' do
-      it 'returns true if passed in user is same as current_user' do
-        allow(@controller).to receive(:current_user).and_return('foo')
-        actual = @controller.current_user?('foo')
-        expect(actual).to be_truthy
-      end
-      it 'otherwise returns false' do
-        allow(@controller).to receive(:current_user).and_return('bar')
-        actual = @controller.current_user?('foo')
-        expect(actual).to be_falsey
       end
     end
 
