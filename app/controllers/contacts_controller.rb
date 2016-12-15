@@ -7,7 +7,6 @@ class ContactsController < ApplicationController
 
   helper_method :sort_column, :sort_direction
 
-  before_action :logged_in_user
   before_action :set_contact,   only: [:show, :update, :destroy]
   before_action :check_user,    only: [:show, :update, :destroy]
 

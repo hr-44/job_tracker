@@ -3,7 +3,6 @@ class RecruitmentsController < ApplicationController
 
   attr_reader :recruitment, :company
 
-  before_action :logged_in_user
   before_action :load_company
   before_action :set_recruitment, only: :destroy
 

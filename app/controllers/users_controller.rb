@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   attr_reader :user, :filtered_user_info
 
-  before_action :logged_in_user, only: [:show, :update, :destroy]
+  skip_before_action :authorize_request, only: :create
   before_action :set_user,       only: [:show, :update, :destroy]
   before_action :check_user,     only: [:show, :update, :destroy]
 
@@ -18,6 +18,7 @@ class UsersController < ApplicationController
     @user = new_account(user_params)
 
     if user.save
+      # TODO: send user an auth token instead of `log_in`
       log_in user
       filter_user_info
       @message = { text: 'Thanks for signing up.' }
