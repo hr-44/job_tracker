@@ -1,18 +1,13 @@
-module AuthenticationHelper
+module AuthorizationHelper
   private
 
   def authorize_api_request(headers)
     token = decode_auth_token(headers)
 
     if token
-      user_id = token[:user_id]
-      user = User.find(user_id)
-
-      if user
-        return user
-      else
-        add_auth_error!('User not found')
-      end
+      user = find_user_from_token(token)
+      return user if user
+      add_auth_error!('User not found')
     end
 
     add_auth_error!('Token invalid')
@@ -32,6 +27,11 @@ module AuthenticationHelper
       add_auth_error!('Authorization header not present. Missing token.')
       nil
     end
+  end
+
+  def find_user_from_token(token)
+    user_id = token[:user_id]
+    User.find(user_id)
   end
 
   def add_auth_error!(msg)

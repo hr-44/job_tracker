@@ -1,7 +1,5 @@
 class TokenController < ApplicationController
-  include AuthenticationHelper
-
-  skip_before_action :authenticate_request
+  skip_before_action :authorize_request
 
   def create
     result = authenticate_user(email: params[:email], password: params[:password])
