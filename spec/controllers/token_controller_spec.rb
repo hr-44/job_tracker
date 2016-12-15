@@ -115,6 +115,10 @@ describe TokenController, type: :controller do
         actual = controller.send(:authenticate_user)
         expect(actual).to eq 'jwt'
       end
+      it 'sets a value for @auth_token' do
+        controller.send(:authenticate_user)
+        expect(assigns(:auth_token)).not_to be_nil
+      end
     end
 
     context 'bad password or email' do
@@ -138,6 +142,10 @@ describe TokenController, type: :controller do
       it 'sets value for @auth_error' do
         controller.send(:authenticate_user)
         expect(assigns(:auth_errors)).not_to be_nil
+      end
+      it 'does not set a value for @auth_token' do
+        controller.send(:authenticate_user)
+        expect(assigns(:auth_token)).to be_nil
       end
       it 'returns nil' do
         actual = controller.send(:authenticate_user)
