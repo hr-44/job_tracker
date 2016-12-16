@@ -5,7 +5,7 @@ describe JobApplications::PostingsController, type: :controller do
   let(:posting) { build(:posting) }
   let(:job_application) { build(:job_application) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   describe 'GET #index' do
     let(:relation) do

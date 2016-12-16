@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
   let(:user) { build(:user) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   describe 'GET #show' do
     before(:each) do

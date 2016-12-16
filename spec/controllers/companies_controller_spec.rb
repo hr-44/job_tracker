@@ -7,7 +7,7 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe 'GET #index' do
     before(:each) do
-      log_in_as(user)
+      stub_auth(user)
       allow(@controller)
         .to receive(:search_filter_sort)
         .and_return([:foo, :bar])
@@ -27,7 +27,7 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe 'GET #show' do
     before(:each) do
-      log_in_as(user)
+      stub_auth(user)
       allow(Company).to receive(:find).and_return(company)
       allow(controller)
         .to receive(:contacts_belonging_to_user_and_current_company)
@@ -66,7 +66,7 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
     before(:each) do
-      log_in_as(user)
+      stub_auth(user)
       allow(Company).to receive(:new).and_return(company)
     end
 
@@ -106,7 +106,7 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
     before(:each) do
-      log_in_as(user)
+      stub_auth(user)
       allow(Company).to receive(:find).and_return(company)
     end
 

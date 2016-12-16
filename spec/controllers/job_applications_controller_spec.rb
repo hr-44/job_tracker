@@ -7,7 +7,7 @@ RSpec.describe JobApplicationsController, type: :controller do
   let(:posting) { build(:posting) }
   let(:cover_letter) { build(:cover_letter) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   describe 'GET #index' do
     let(:relation) do

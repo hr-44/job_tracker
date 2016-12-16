@@ -5,7 +5,7 @@ describe JobApplications::CoverLettersController, type: :controller do
   let(:cover_letter) { build(:cover_letter) }
   let(:job_application) { build(:job_application) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   # TODO: Fix the stubbing/mocking in this test
   describe 'GET #index' do

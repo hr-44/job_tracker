@@ -6,7 +6,7 @@ RSpec.describe NotesController, type: :controller do
   let(:contact) { build(:contact) }
   let(:job_application) { build(:job_application, id: 1) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   describe 'GET #index' do
     shared_examples_for 'common functional tests for #index' do

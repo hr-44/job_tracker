@@ -6,7 +6,7 @@ describe RecruitmentsController, type: :controller do
   let(:company) { build(:company) }
 
   before(:each) do
-    log_in_as(user)
+    stub_auth(user)
   end
 
   describe 'POST #create' do

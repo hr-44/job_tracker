@@ -5,7 +5,7 @@ RSpec.describe ContactsController, type: :controller do
   let(:contact) { build(:contact) }
   let(:company) { build(:company) }
 
-  before(:each) { log_in_as(user) }
+  before(:each) { stub_auth(user) }
 
   describe 'GET #index' do
     let!(:relation) do

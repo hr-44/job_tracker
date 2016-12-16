@@ -5,7 +5,7 @@ RSpec.describe SearchSuggestionsController, type: :controller do
 
   describe '#index' do
     before(:each) do
-      log_in_as(user)
+      stub_auth(user)
       allow(SearchSuggestion)
         .to receive(:terms_for)
         .and_return(foo: 'bar')
