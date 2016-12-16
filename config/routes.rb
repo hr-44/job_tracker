@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'routes#index'
-  get '/about', to: 'home#about', as: 'about'
 
   match '/search_suggestions', to: 'search_suggestions#index', via: :get
 
