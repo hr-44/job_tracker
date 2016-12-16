@@ -8,10 +8,7 @@ end
 
 require 'spec_helper'
 require 'rspec/rails'
-require 'support/stub_login'
 require 'support/factory_girl'
-
-include StubLogin
 
 # Checks for pending migrations before tests are run.
 ActiveRecord::Migration.maintain_test_schema!
