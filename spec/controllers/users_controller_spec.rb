@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :controller do
   let(:user) { build(:user) }
 
-  before(:each) { stub_auth(user) }
-
   describe 'GET #show' do
+    before(:each) { stub_auth(user) }
+
     before(:each) do
       allow(User).to receive(:find).and_return(user)
       allow(User).to receive(:filter_user_info).and_return(true)
@@ -52,8 +52,9 @@ RSpec.describe UsersController, type: :controller do
     context 'with valid params' do
       before(:each) do
         allow(user).to receive(:save).and_return(true)
-        allow(controller).to receive(:log_in).and_return(true)
+        allow(user).to receive(:id).and_return(1)
         allow(User).to receive(:filter_user_info).and_return(true)
+        allow(JsonWebToken).to receive(:encode).and_return(true)
       end
 
       it_behaves_like 'calls these methods every time'
@@ -72,6 +73,9 @@ RSpec.describe UsersController, type: :controller do
         it 'sets a value for @message' do
           expect(assigns(:message)).not_to be_nil
         end
+        it 'sets a value for @auth_token' do
+          expect(assigns(:auth_token)).not_to be_nil
+        end
         it 'renders success' do
           expect(response).to render_template('success')
         end
@@ -88,8 +92,8 @@ RSpec.describe UsersController, type: :controller do
         it 'calls filtered_user_info' do
           expect(controller).to receive(:filter_user_info)
         end
-        it 'calls log_in' do
-          expect(controller).to receive(:log_in)
+        it 'calls .encode on JsonWebToken' do
+          expect(JsonWebToken).to receive(:encode).with(user_id: 1)
         end
       end
     end
@@ -117,6 +121,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     before(:each) do
+      stub_auth(user)
       allow(User).to receive(:find).and_return(user)
     end
 
@@ -182,6 +187,7 @@ RSpec.describe UsersController, type: :controller do
 
   describe 'DELETE #destroy' do
     before(:each) do
+      stub_auth(user)
       allow(User).to receive(:find).and_return(user)
       allow(user).to receive(:destroy).and_return(true)
     end
