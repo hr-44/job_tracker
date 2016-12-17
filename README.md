@@ -61,9 +61,18 @@ You can use this
 to get yourself started on API calls.
 
 Most resources are protected. You'll have to be authorized to do pretty much
-anything (the original project is a public app). For now, you can authorize
-yourself by sending a `POST` to `/login`. Use the request in the postman
-collection's "auth" folder.
+anything (the original project is a public app).
+
+##### Authorization flow
+
+```sh
+curl -X POST -H "Content-Type: application/json" \
+-d '{"email":"foobar@example.com","password":"password"}' \
+ "http://localhost:3000/token"
+```
+
+You'll receive an authentication token. Be sure to send this token in the
+`Authorization` header of subsequent requests.
 
 ### Resources
 
