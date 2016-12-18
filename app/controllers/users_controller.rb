@@ -66,8 +66,14 @@ class UsersController < ApplicationController
     [:name, :email, :password, :password_confirmation]
   end
 
+  # This method does same thing as the `#check_user` method in `OwnResources`.
+  # However, that module brings some extra requirements, not needed here.
+  # It's easier to rewrite the helper method for this controller.
   def check_user
-    redirect_to(root_url) unless current_user?(user)
+    unless current_user?(user)
+      @errors = 'You are not authorized to access or modify this resource'
+      render('shared/errors', status: :unauthorized)
+    end
   end
 
   def filter_user_info

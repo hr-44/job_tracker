@@ -2,7 +2,10 @@ module OwnResources
   private
 
   def check_user
-    redirect_to(root_url) unless correct_user?
+    unless correct_user?
+      @errors = 'You are not authorized to access or modify this resource'
+      render('shared/errors', status: :unauthorized)
+    end
   end
 
   def correct_user?

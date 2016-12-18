@@ -242,25 +242,33 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe '#check_user' do
-    after(:each) do
-      controller.send(:check_user)
-    end
-
     it 'calls #current_user?' do
       allow(controller).to receive(:current_user?).and_return(true)
       expect(controller).to receive(:current_user?).with(assigns(:user))
+      controller.send(:check_user)
     end
+
     context 'when #correct_user? is true' do
       it 'does not redirect' do
         allow(controller).to receive(:current_user?).and_return(true)
         expect(controller).not_to receive(:redirect_to)
+        controller.send(:check_user)
       end
     end
-    context 'when #correct_user? is false' do
-      it 'redirects to root_url' do
+
+    context 'when #current_user? is false' do
+      before(:each) do
         allow(controller).to receive(:current_user?).and_return(false)
-        allow(controller).to receive(:redirect_to).and_return(true)
-        expect(controller).to receive(:redirect_to).with(root_url)
+        allow(controller).to receive(:render).and_return(true)
+      end
+
+      it 'renders shared/errors' do
+        expect(controller).to receive(:render).with('shared/errors', status: :unauthorized)
+        controller.send(:check_user)
+      end
+      it 'sets value for @errors' do
+        controller.send(:check_user)
+        expect(assigns(:errors)).not_to be_nil
       end
     end
   end

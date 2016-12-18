@@ -20,7 +20,7 @@ module Sessions
         }
       }
 
-      render('login', status: 401)
+      render('sessions/login', status: 401)
     end
 
     def create
@@ -29,7 +29,7 @@ module Sessions
         redirect_or_show_success
       else
         @message = 'Invalid email/password combination.'
-        render('login', status: 401)
+        render('sessions/login', status: 401)
       end
     end
 
@@ -87,11 +87,13 @@ module Sessions
     end
 
     def redirect_or_show_success
-      if session[:forwarding_url]
-        redirect_back_or(root_url)
+      forwarding_url = session[:forwarding_url]
+
+      if forwarding_url.present?
+        redirect_back_or(forwarding_url)
       else
         @message = 'You have logged in. Have a cookie.'
-        render('login')
+        render('sessions/login')
       end
     end
   end

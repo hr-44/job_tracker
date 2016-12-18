@@ -7,17 +7,19 @@ describe Sessions::OmniAuthUsersController, type: :controller do
     before(:each) do
       allow(@controller).to receive(:set_user)
       allow(@controller).to receive(:user).and_return(user)
-      allow(@controller).to receive(:render).and_return(true)
     end
 
     context 'success' do
       before(:each) do
         allow(@controller).to receive(:log_in).and_return(true)
-        post(:create,params: {  provider: 'foo' })
+        post(:create, params: {  provider: 'foo' })
       end
 
-      it 'redirects to root' do
-        expect(response).to redirect_to root_url
+      it 'renders sessions/login' do
+        expect(response).to render_template('sessions/login')
+      end
+      it 'sets a value for @message' do
+        expect(assigns(:message)).not_to be_nil
       end
     end
 
@@ -30,17 +32,23 @@ describe Sessions::OmniAuthUsersController, type: :controller do
         post(:create, params: { provider: 'foo' })
         expect(response).to redirect_to(action: 'failure')
       end
-      it 'returns early & does not redirect user to root url' do
-        expect(@controller).not_to receive(:redirect_to).with(root_url)
+      it 'returns early & does not render sessions/login' do
+        expect(response).not_to render_template('sessions/login')
         post(:create, params: { provider: 'foo' })
       end
     end
   end
 
   describe '#GET failure' do
-    it 'redirects to root' do
+    before(:each) do
       get(:failure)
-      expect(response).to redirect_to(root_url)
+    end
+
+    it 'renders shared/errors' do
+      expect(response).to render_template('shared/errors')
+    end
+    it 'sets a value for @errors' do
+      expect(assigns(:errors)).not_to be_nil
     end
   end
 
