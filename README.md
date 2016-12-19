@@ -36,11 +36,25 @@ production environment database for that.
 
 ## API
 
-Type `bundle exec rails routes` to see a fully-generated list of API routes.
-Pass the `-g` flag to grep for routes from a specific controller namespace:
-`bundle exec rails routes -g job_applications`
+#### Inspecting routes
 
-##### Postman
+Some ways to see available routes
+
+###### CLI
+
+* Type `bundle exec rails routes` to see a fully-generated list of API routes.
+  Pass the `-g` flag to grep for routes from a specific controller namespace:
+  * ie: `bundle exec rails routes -g job_applications`.
+
+###### Browser
+
+* Visit [`http://localhost:3000/rails/info/routes`](http://localhost:3000/rails/info/routes)
+
+###### REST
+
+* Send a `GET` to `/` for a menu of routes in JSON format.
+
+#### Postman
 
 You can use this
 [postman collection](https://www.getpostman.com/collections/4e66023066287e7bbd1e)
