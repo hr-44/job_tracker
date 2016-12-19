@@ -41,20 +41,24 @@ describe OwnResources, type: :controller do
       controller.send(:check_user)
     end
 
-    context 'when #correct_user? is false' do
+    context 'when auth token is valid but #correct_user? is false' do
       before(:each) do
+        allow(controller).to receive(:authorize_api_request).and_return(user)
         allow(controller).to receive(:correct_user?).and_return(false)
         get(:index)
       end
 
+      it 'sets value for current_user' do
+        expect(assigns(:current_user)).not_to be_nil
+      end
+      it 'sets value for @errors' do
+        expect(assigns(:errors)).not_to be_nil
+      end
       it 'renders shared/errors' do
         expect(response).to render_template('shared/errors')
       end
       it 'returns a 401' do
         expect(response).to have_http_status(:unauthorized)
-      end
-      it 'sets value for @errors' do
-        expect(assigns(:errors)).not_to be_nil
       end
     end
   end
