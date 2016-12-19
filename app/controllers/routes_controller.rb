@@ -1,4 +1,5 @@
 class RoutesController < ApplicationController
+  skip_before_action :authorize_request
   before_action :routes!
 
   def index
